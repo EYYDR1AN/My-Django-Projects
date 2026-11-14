@@ -1,0 +1,356 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+
+    .add-skill-container {
+        max-width: 900px;
+        margin: 55px auto;
+        padding: 0 30px;
+    }
+
+    .section-label {
+        color: #00e5ff;
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .add-skill-container h1 {
+        color: #ffffff;
+        font-size: 34px;
+        margin-bottom: 30px;
+    }
+
+
+    /* =========================
+       FORM CARD
+    ========================= */
+
+    .skill-form-card {
+        max-width: 850px;
+
+        background: #111824;
+
+        border: 1px solid #1d2938;
+        border-radius: 7px;
+
+        padding: 35px;
+
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+
+    /* =========================
+       FORM
+    ========================= */
+
+    .skill-form-card p {
+        margin: 0 0 24px 0;
+    }
+
+    .skill-form-card label {
+        display: block;
+
+        color: #cbd3dc;
+
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        font-weight: bold;
+
+        margin-bottom: 9px;
+    }
+
+
+    /* =========================
+       INPUTS
+    ========================= */
+
+    .skill-form-card input[type="text"],
+    .skill-form-card textarea {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        background: #080c12;
+
+        color: #e8edf2;
+
+        border: 1px solid #263346;
+
+        border-radius: 5px;
+
+        padding: 13px 15px;
+
+        font-family: "Courier New", monospace;
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition: 0.2s ease;
+    }
+
+
+    /* Skill name and category */
+
+    .skill-form-card input[type="text"] {
+        height: 45px;
+    }
+
+
+    /* Description */
+
+    .skill-form-card textarea {
+
+        min-height: 160px;
+
+        resize: vertical;
+
+        line-height: 1.5;
+    }
+
+
+    /* =========================
+       FOCUS EFFECT
+    ========================= */
+
+    .skill-form-card input[type="text"]:focus,
+    .skill-form-card textarea:focus {
+
+        border-color: #00e5ff;
+
+        box-shadow:
+            0 0 0 1px #00e5ff,
+            0 0 12px rgba(0, 229, 255, 0.08);
+    }
+
+
+    /* =========================
+       BUTTONS
+    ========================= */
+
+    .buttons {
+
+        display: flex;
+
+        gap: 12px;
+
+        margin-top: 30px;
+    }
+
+
+    .save-button {
+
+        background: #00e5ff;
+
+        color: #080c12;
+
+        border: none;
+
+        border-radius: 5px;
+
+        padding: 13px 22px;
+
+        font-family: "Courier New", monospace;
+
+        font-size: 11px;
+
+        font-weight: bold;
+
+        letter-spacing: 1px;
+
+        cursor: pointer;
+
+        transition: 0.2s ease;
+    }
+
+
+    .save-button:hover {
+
+        background: #ffffff;
+
+        transform: translateY(-1px);
+    }
+
+
+    .cancel-button {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        background: #182131;
+
+        color: #8994a3;
+
+        border: 1px solid #26384d;
+
+        border-radius: 5px;
+
+        padding: 12px 22px;
+
+        font-family: "Courier New", monospace;
+
+        font-size: 11px;
+
+        font-weight: bold;
+
+        letter-spacing: 1px;
+
+        transition: 0.2s ease;
+    }
+
+
+    .cancel-button:hover {
+
+        color: #00e5ff;
+
+        border-color: #00e5ff;
+    }
+
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 700px) {
+
+        .add-skill-container {
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+        }
+
+        .add-skill-container h1 {
+
+            font-size: 28px;
+        }
+
+        .skill-form-card {
+
+            padding: 25px;
+        }
+
+        .buttons {
+
+            flex-direction: column;
+        }
+
+        .save-button,
+        .cancel-button {
+
+            width: 100%;
+
+            text-align: center;
+        }
+
+    }
+
+</style>
+
+
+<div class="add-skill-container">
+
+    <div class="section-label">
+        ■ SYSTEM MODULE
+    </div>
+
+    <h1>
+        Edit Skill
+    </h1>
+
+
+    <div class="skill-form-card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+            <!-- SKILL NAME -->
+
+            <p>
+
+                <label>
+                    Skill Name
+                </label>
+
+                <input
+                    type="text"
+                    name="skill_name"
+                    value="{{ skill.skill_name }}"
+                    required
+                >
+
+            </p>
+
+
+            <!-- CATEGORY -->
+
+            <p>
+
+                <label>
+                    Category
+                </label>
+
+                <input
+                    type="text"
+                    name="category"
+                    value="{{ skill.category }}"
+                    required
+                >
+
+            </p>
+
+
+            <!-- DESCRIPTION -->
+
+            <p>
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    required
+                >{{ skill.description }}</textarea>
+
+            </p>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="save-button"
+                >
+                    UPDATE SKILL
+                </button>
+
+
+                <a
+                    href="{% url 'skills' %}"
+                    class="cancel-button"
+                >
+                    CANCEL
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

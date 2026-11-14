@@ -1,0 +1,1539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeRush | PlayZone</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #101827;
+    color: white;
+    min-height: 100vh;
+}
+
+header {
+    min-height: 72px;
+    padding: 12px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111e32;
+    border-bottom: 1px solid #293951;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    color: #38d9ff;
+    letter-spacing: 1px;
+}
+
+.logo span { color: #ffbf45; }
+
+.home-btn {
+    background: #243750;
+    color: white;
+    border: 1px solid #405875;
+    padding: 10px 18px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1150px;
+    margin: 30px auto;
+    padding: 0 20px 40px;
+}
+
+.intro {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.intro h1 {
+    font-size: 36px;
+    margin-bottom: 8px;
+}
+
+.intro h1 span { color: #38d9ff; }
+
+.intro p { color: #9aabc1; font-size: 14px; }
+
+.setup-panel {
+    background: #19283d;
+    border: 1px solid #2c405b;
+    border-radius: 13px;
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.setup-panel label {
+    color: #91a5bd;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.setup-panel select {
+    margin-left: 8px;
+    padding: 10px 14px;
+    background: #101c2e;
+    border: 1px solid #405875;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+}
+
+.best-record {
+    color: #ffbf45;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: #19283d;
+    border: 1px solid #2c405b;
+    border-radius: 13px;
+    padding: 16px;
+    text-align: center;
+}
+
+.stat small {
+    display: block;
+    color: #91a5bd;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.stat strong {
+    font-size: 25px;
+    color: white;
+}
+
+.stat strong.cyan { color: #38d9ff; }
+
+.race-card {
+    background: #19283d;
+    border: 1px solid #2c405b;
+    border-radius: 17px;
+    padding: 16px;
+    box-shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+.track-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 5px 15px;
+    gap: 10px;
+}
+
+.track-heading h2 { font-size: 17px; }
+
+.track-heading span {
+    font-size: 12px;
+    color: #9aabc1;
+}
+
+.track {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #343d4a;
+    border: 5px solid #4c5968;
+    padding: 14px 0;
+}
+
+.track::before,
+.track::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 7px;
+    background: #f2f2f2;
+    z-index: 1;
+}
+
+.track::before { top: 0; }
+.track::after { bottom: 0; }
+
+.lane {
+    height: 73px;
+    position: relative;
+    border-bottom: 2px dashed rgba(255,255,255,.55);
+}
+
+.lane:last-of-type { border-bottom: none; }
+
+.lane-label {
+    position: absolute;
+    left: 10px;
+    top: 27px;
+    font-size: 10px;
+    color: rgba(255,255,255,.6);
+    z-index: 2;
+}
+
+.car {
+    position: absolute;
+    top: 13px;
+    left: 0%;
+    width: 76px;
+    height: 42px;
+    transition: left .12s linear;
+    z-index: 3;
+}
+
+.car-body {
+    position: absolute;
+    left: 8px;
+    top: 7px;
+    width: 62px;
+    height: 25px;
+    background: var(--car-color);
+    border-radius: 10px 15px 8px 8px;
+    box-shadow: inset 0 -5px rgba(0,0,0,.2),
+                0 4px 8px rgba(0,0,0,.4);
+}
+
+.car-body::before {
+    content: "";
+    position: absolute;
+    left: 17px;
+    top: -10px;
+    width: 31px;
+    height: 15px;
+    background: var(--car-color);
+    border-radius: 9px 12px 0 0;
+    clip-path: polygon(20% 0,80% 0,100% 100%,0 100%);
+}
+
+.car-window {
+    position: absolute;
+    left: 26px;
+    top: 0;
+    width: 23px;
+    height: 9px;
+    background: #a8e8ff;
+    border-radius: 6px 8px 0 0;
+    z-index: 2;
+}
+
+.car-light {
+    position: absolute;
+    right: 7px;
+    top: 15px;
+    width: 5px;
+    height: 7px;
+    background: #fff8ad;
+    border-radius: 2px;
+}
+
+.wheel {
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #111;
+    border: 3px solid #8995a2;
+    top: 25px;
+    z-index: 4;
+    animation: wheelSpin .35s linear infinite;
+}
+
+.wheel.one { left: 15px; }
+.wheel.two { right: 10px; }
+
+@keyframes wheelSpin {
+    to { transform: rotate(360deg); }
+}
+
+.player .car-body {
+    box-shadow: 0 0 12px var(--car-color),
+                inset 0 -5px rgba(0,0,0,.2);
+}
+
+.finish {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 7%;
+    width: 13px;
+    z-index: 2;
+    background: repeating-conic-gradient(#fff 0% 25%,#111 0% 50%) 0 0 / 13px 13px;
+}
+
+.finish-label {
+    position: absolute;
+    right: 5%;
+    top: 4px;
+    font-size: 9px;
+    color: white;
+    z-index: 3;
+    background: #101827;
+    padding: 3px 5px;
+    border-radius: 4px;
+}
+
+.car-name {
+    position: absolute;
+    top: -2px;
+    left: 8px;
+    font-size: 9px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px black;
+}
+
+.typing-panel {
+    margin-top: 20px;
+    background: #19283d;
+    border: 1px solid #2c405b;
+    border-radius: 17px;
+    padding: 22px;
+}
+
+.typing-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.typing-header h2 { font-size: 18px; }
+
+.typing-header span {
+    font-size: 12px;
+    color: #38d9ff;
+}
+
+.sentence {
+    background: #101c2e;
+    border: 1px solid #334861;
+    padding: 19px;
+    border-radius: 10px;
+    line-height: 2;
+    font-size: 18px;
+    letter-spacing: .3px;
+    margin-bottom: 15px;
+    min-height: 85px;
+    overflow-wrap: anywhere;
+}
+
+.sentence span { color: #8295ad; }
+.sentence span.correct { color: #45e39b; }
+
+.sentence span.wrong {
+    color: #ff6375;
+    background: rgba(255,99,117,.15);
+    border-radius: 3px;
+}
+
+.sentence span.current { border-bottom: 2px solid #38d9ff; }
+
+#typingInput {
+    width: 100%;
+    padding: 16px;
+    background: #101c2e;
+    border: 2px solid #344c69;
+    border-radius: 10px;
+    color: white;
+    outline: none;
+    font-size: 16px;
+}
+
+#typingInput:focus {
+    border-color: #38d9ff;
+    box-shadow: 0 0 0 3px rgba(56,217,255,.1);
+}
+
+#typingInput:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.btn {
+    border: none;
+    padding: 13px 22px;
+    border-radius: 9px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.start-btn {
+    background: #38d9ff;
+    color: #102033;
+    flex: 1;
+}
+
+.start-btn:hover { background: #75e7ff; }
+
+.start-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.reset-btn {
+    background: #30435d;
+    color: white;
+}
+
+.reset-btn:hover { background: #405875; }
+
+.instructions {
+    color: #91a5bd;
+    font-size: 12px;
+    margin-top: 15px;
+    line-height: 1.7;
+}
+
+/* PLAYER DISPLAY */
+.player-display {
+    color: #b8c8dc;
+    font-size: 13px;
+    font-weight: bold;
+}
+.player-display strong { color: #ffbf45; }
+
+.pause-control {
+    background: #287ca5;
+    color: white;
+}
+.pause-control:hover { background: #176287; }
+.pause-control:disabled { opacity: .45; cursor: not-allowed; }
+
+/* PAUSE SCREEN - MATCHING THE BLIMP JUMP DESIGN */
+.pause-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(4, 7, 18, .97);
+}
+.pause-overlay.hidden { display: none; }
+.pause-content {
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+    padding: 25px;
+}
+.pause-content h2 {
+    color: #20d9f5;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(32,217,245,.75), 0 0 25px rgba(32,217,245,.35);
+}
+.pause-content p {
+    color: #aeb6c8;
+    font-size: 11px;
+    font-weight: bold;
+    margin-bottom: 18px;
+}
+.pause-content button {
+    display: block;
+    width: min(100%, 280px);
+    min-height: 47px;
+    margin: 12px auto;
+    border: 0;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 5px 0 rgba(0,0,0,.28);
+    transition: transform .15s, filter .15s;
+}
+.pause-content button:hover { filter: brightness(1.12); transform: translateY(-1px); }
+.pause-resume {
+    background: linear-gradient(110deg, #a783ff, #7835ed);
+    box-shadow: 0 5px 0 #4c269b !important;
+}
+.pause-quit {
+    background: linear-gradient(110deg, #657890, #35465e);
+    box-shadow: 0 5px 0 #263448 !important;
+}
+
+/* OVERLAYS */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(4,10,20,.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    padding: 20px;
+}
+
+.overlay.hidden { display: none; }
+
+.modal {
+    width: 100%;
+    max-width: 460px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #19283d;
+    border: 1px solid #3a536f;
+    border-radius: 20px;
+    padding: 35px 25px;
+    text-align: center;
+    box-shadow: 0 20px 70px rgba(0,0,0,.5);
+    position: relative;
+}
+
+.modal h2 {
+    font-size: 32px;
+    margin-bottom: 10px;
+    color: #38d9ff;
+}
+
+.modal p {
+    color: #a8b8cc;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.countdown {
+    font-size: 75px;
+    font-weight: 900;
+    color: #ffbf45;
+    text-shadow: 0 0 25px rgba(255,191,69,.4);
+    animation: countPop .5s ease;
+}
+
+@keyframes countPop {
+    from { transform: scale(.4); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.result-stats div {
+    background: #101c2e;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #263c56;
+}
+
+.result-stats small {
+    display: block;
+    color: #91a5bd;
+    font-size: 11px;
+    margin-bottom: 7px;
+}
+
+.result-stats strong { font-size: 22px; }
+
+.result-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.result-buttons button { flex: 1; }
+
+.back-btn {
+    background: #30435d;
+    color: white;
+}
+
+.back-btn:hover { background: #405875; }
+
+.new-record {
+    color: #ffbf45 !important;
+    font-weight: bold;
+    animation: recordGlow 1s infinite alternate;
+}
+
+@keyframes recordGlow {
+    from { text-shadow: 0 0 3px #ffbf45; }
+    to { text-shadow: 0 0 15px #ffbf45; }
+}
+
+/* WIN EFFECTS */
+.track.winner {
+    animation: winnerGlow .7s infinite alternate;
+}
+
+@keyframes winnerGlow {
+    from { box-shadow: 0 0 5px #ffbf45; }
+    to { box-shadow: 0 0 25px #ffbf45, 0 0 40px #38d9ff; }
+}
+
+.confetti {
+    position: fixed;
+    top: -15px;
+    width: 9px;
+    height: 15px;
+    z-index: 30;
+    pointer-events: none;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(800deg);
+        opacity: 0;
+    }
+}
+
+@media(max-width: 650px) {
+    header { gap: 8px; padding: 12px 3%; }
+    .logo { font-size: 19px; }
+    .player-display { font-size: 10px; }
+    .home-btn { padding: 8px 9px; font-size: 10px; }
+    .actions { flex-wrap: wrap; }
+    .actions .btn { flex: 1 1 30%; padding: 12px 8px; font-size: 11px; }
+    .pause-content h2 { font-size: 25px; }
+    .stats { grid-template-columns: repeat(2,1fr); }
+    .intro h1 { font-size: 28px; }
+    .typing-panel { padding: 15px; }
+    .sentence { font-size: 15px; }
+    .lane { height: 65px; }
+    .car { transform: scale(.85); transform-origin: left center; }
+    .result-buttons { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">TYPE<span>RUSH</span></div>
+    <div class="player-display">PLAYER: <strong id="activePlayer">Guest</strong></div>
+    <button class="home-btn" onclick="goHome()">BACK TO PLAYZONE</button>
+</header>
+
+<main>
+
+    <section class="intro">
+        <h1>Ready, Set, <span>TYPE!</span></h1>
+        <p>Race against three opponents. Type faster to reach the finish line!</p>
+    </section>
+
+    <section class="setup-panel">
+        <div>
+            <label for="difficulty">DIFFICULTY</label>
+            <select id="difficulty" onchange="changeDifficulty()">
+                <option value="easy">Easy</option>
+                <option value="normal" selected>Normal</option>
+                <option value="hard">Hard</option>
+                <option value="expert">Expert</option>
+            </select>
+        </div>
+
+        <div class="best-record">
+            🏆 PERSONAL BEST: <span id="bestWpm">0</span> WPM
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat">
+            <small>YOUR SPEED</small>
+            <strong class="cyan" id="wpm">0</strong>
+            <small>WPM</small>
+        </div>
+
+        <div class="stat">
+            <small>ACCURACY</small>
+            <strong id="accuracy">100%</strong>
+        </div>
+
+        <div class="stat">
+            <small>RACE TIME</small>
+            <strong id="timer">0.0s</strong>
+        </div>
+
+        <div class="stat">
+            <small>YOUR POSITION</small>
+            <strong id="position">1st</strong>
+        </div>
+    </section>
+
+    <section class="race-card">
+        <div class="track-heading">
+            <h2>🏁 THE RACE TRACK</h2>
+            <span id="raceDifficulty">NORMAL • 4 RACERS</span>
+        </div>
+
+        <div class="track" id="track">
+            <div class="finish"></div>
+            <div class="finish-label">FINISH</div>
+
+            <div class="lane">
+                <span class="lane-label">01</span>
+                <div class="car player" id="car0" style="--car-color:#20baff;">
+                    <span class="car-name">YOU</span>
+                    <div class="car-body"></div>
+                    <div class="car-window"></div>
+                    <div class="car-light"></div>
+                    <div class="wheel one"></div>
+                    <div class="wheel two"></div>
+                </div>
+            </div>
+
+            <div class="lane">
+                <span class="lane-label">02</span>
+                <div class="car" id="car1" style="--car-color:#ff465d;">
+                    <span class="car-name">RIVAL 1</span>
+                    <div class="car-body"></div>
+                    <div class="car-window"></div>
+                    <div class="car-light"></div>
+                    <div class="wheel one"></div>
+                    <div class="wheel two"></div>
+                </div>
+            </div>
+
+            <div class="lane">
+                <span class="lane-label">03</span>
+                <div class="car" id="car2" style="--car-color:#ffbd3e;">
+                    <span class="car-name">RIVAL 2</span>
+                    <div class="car-body"></div>
+                    <div class="car-window"></div>
+                    <div class="car-light"></div>
+                    <div class="wheel one"></div>
+                    <div class="wheel two"></div>
+                </div>
+            </div>
+
+            <div class="lane">
+                <span class="lane-label">04</span>
+                <div class="car" id="car3" style="--car-color:#55db8b;">
+                    <span class="car-name">RIVAL 3</span>
+                    <div class="car-body"></div>
+                    <div class="car-window"></div>
+                    <div class="car-light"></div>
+                    <div class="wheel one"></div>
+                    <div class="wheel two"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="typing-panel">
+        <div class="typing-header">
+            <h2>⌨️ Type the sentence</h2>
+            <span id="progress">0% COMPLETE</span>
+        </div>
+
+        <div class="sentence" id="sentenceDisplay"></div>
+
+        <input
+            type="text"
+            id="typingInput"
+            placeholder="Press START RACE first..."
+            autocomplete="off"
+            spellcheck="false"
+            disabled
+        >
+
+        <div class="actions">
+            <button class="btn start-btn" id="startBtn" onclick="startCountdown()">
+                START RACE
+            </button>
+
+            <button class="btn pause-control" id="pauseBtn" onclick="pauseGame()" disabled>
+                Ⅱ PAUSE
+            </button>
+
+            <button class="btn reset-btn" onclick="resetGame()">
+                ↻ RESET
+            </button>
+        </div>
+
+        <p class="instructions">
+            HOW TO PLAY: Type the displayed sentence as quickly and accurately as possible.
+            Your car moves forward as you type correctly. The other three cars are controlled
+            by the computer. The first car to cross the finish line wins!
+        </p>
+    </section>
+
+</main>
+
+<!-- PAUSE SCREEN -->
+<div class="pause-overlay hidden" id="pauseOverlay">
+    <div class="pause-content">
+        <h2>Ⅱ GAME PAUSED</h2>
+        <p>Your game is paused. Take a break!</p>
+        <button class="pause-resume" onclick="resumeGame()">▶ RESUME GAME</button>
+        <button class="pause-quit" onclick="quitGame()">QUIT GAME</button>
+    </div>
+</div>
+
+<!-- COUNTDOWN -->
+<div class="overlay hidden" id="countdownOverlay">
+    <div class="modal">
+        <h2>GET READY!</h2>
+        <p>Your engine is running. Prepare your fingers!</p>
+        <div class="countdown" id="countdownNumber">3</div>
+    </div>
+</div>
+
+<!-- RESULT AND STATISTICS SCREEN -->
+<div class="overlay hidden" id="resultOverlay">
+    <div class="modal">
+        <h2 id="resultTitle">🏆 YOU WIN!</h2>
+        <p id="resultMessage">Congratulations!</p>
+        <p id="recordMessage"></p>
+
+        <div class="result-stats">
+            <div>
+                <small>YOUR WPM</small>
+                <strong id="finalWpm">0</strong>
+            </div>
+
+            <div>
+                <small>ACCURACY</small>
+                <strong id="finalAccuracy">100%</strong>
+            </div>
+
+            <div>
+                <small>RACE TIME</small>
+                <strong id="finalTime">0s</strong>
+            </div>
+
+            <div>
+                <small>POSITION</small>
+                <strong id="finalPosition">1st</strong>
+            </div>
+
+            <div>
+                <small>CORRECT CHARACTERS</small>
+                <strong id="finalCorrect">0</strong>
+            </div>
+
+            <div>
+                <small>ERRORS</small>
+                <strong id="finalErrors">0</strong>
+            </div>
+
+            <div>
+                <small>DIFFICULTY</small>
+                <strong id="finalDifficulty">Normal</strong>
+            </div>
+
+            <div>
+                <small>PERSONAL BEST</small>
+                <strong id="finalBest">0</strong>
+            </div>
+        </div>
+
+        <div class="result-buttons">
+            <button class="btn start-btn" onclick="playAgain()">
+                ↻ PLAY AGAIN
+            </button>
+
+            <button class="btn back-btn" onclick="closeResult()">
+                ← BACK
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ======================================
+// SENTENCE COLLECTION
+// ======================================
+
+const sentenceBank = {
+    easy: [
+        "Practice makes perfect.",
+        "The blue car is very fast.",
+        "Keep moving toward your goal.",
+        "Every race starts with one step.",
+        "Typing is a useful skill.",
+        "Never stop learning new things.",
+        "The sun shines brightly today.",
+        "Speed and focus help you win.",
+        "I enjoy playing fun games.",
+        "Believe in yourself and try again."
+    ],
+
+    normal: [
+        "The fastest car wins the race when the driver stays focused.",
+        "Practice makes perfect and every second counts on the track.",
+        "Speed and accuracy are the secrets of becoming a great racer.",
+        "Never give up because the finish line is closer than you think.",
+        "The road to success belongs to those who never stop trying.",
+        "A good driver knows when to accelerate and when to slow down.",
+        "Every challenge is an opportunity to improve your skills.",
+        "Focus on your destination and keep moving forward.",
+        "Typing quickly requires practice, patience, and concentration.",
+        "The best way to improve is to keep challenging yourself.",
+        "Small improvements every day can lead to great achievements.",
+        "A successful racer combines speed with excellent control."
+    ],
+
+    hard: [
+        "A professional racer must maintain concentration, precision, and confidence throughout the competition.",
+        "Consistent practice improves typing speed while reducing unnecessary mistakes and hesitation.",
+        "Success is achieved through determination, discipline, patience, and the courage to keep improving.",
+        "The strongest competitors remain calm under pressure and make every second count.",
+        "Accurate typing requires coordination between your thoughts, fingers, and visual attention.",
+        "A challenging race tests your ability to react quickly without sacrificing accuracy.",
+        "Developing excellent skills takes commitment, repetition, and a willingness to learn.",
+        "The difference between winning and losing can depend on a single mistake."
+    ],
+
+    expert: [
+        "Extraordinary performance comes from combining accuracy, consistency, concentration, and disciplined practice.",
+        "Champions understand that maintaining precision under pressure is just as important as achieving incredible speed.",
+        "A competitive advantage is developed through deliberate practice, strategic thinking, and continuous improvement.",
+        "Successful individuals transform difficult challenges into valuable opportunities for personal development.",
+        "Precision matters because even the smallest typing mistake can affect your overall racing performance.",
+        "The ability to remain focused during demanding situations separates experienced competitors from beginners.",
+        "Excellence is not achieved overnight; it requires persistence, patience, and a commitment to improvement."
+    ]
+};
+
+// ======================================
+// GAME VARIABLES
+// ======================================
+
+let currentSentence = "";
+let positions = [0, 0, 0, 0];
+
+let gameActive = false;
+let gameFinished = false;
+let countdownRunning = false;
+let gamePaused = false;
+let pauseStartedAt = 0;
+
+let startTime = 0;
+let elapsed = 0;
+
+let correctChars = 0;
+let totalTyped = 0;
+let errors = 0;
+
+let lastInputValue = "";
+
+let animationFrame;
+let lastFrame = 0;
+let countdownInterval;
+
+let personalBest = Number(localStorage.getItem("typeRushBestWPM")) || 0;
+
+const input = document.getElementById("typingInput");
+const display = document.getElementById("sentenceDisplay");
+
+const difficultySettings = {
+    easy: {
+        speeds: [0, 0.035, 0.038, 0.033],
+        label: "EASY"
+    },
+    normal: {
+        speeds: [0, 0.055, 0.060, 0.052],
+        label: "NORMAL"
+    },
+    hard: {
+        speeds: [0, 0.075, 0.080, 0.072],
+        label: "HARD"
+    },
+    expert: {
+        speeds: [0, 0.095, 0.105, 0.100],
+        label: "EXPERT"
+    }
+};
+
+function getDifficulty() {
+    return document.getElementById("difficulty").value;
+}
+
+const playerName = sessionStorage.getItem("playZonePlayerName") || "Guest";
+document.getElementById("activePlayer").textContent = playerName;
+
+function goHome() {
+    window.location.href = "{% url 'home' %}";
+}
+
+// ======================================
+// PERSONAL BEST
+// ======================================
+
+function updateBestDisplay() {
+    document.getElementById("bestWpm").textContent = personalBest;
+}
+
+// ======================================
+// DIFFICULTY
+// ======================================
+
+function changeDifficulty() {
+    if (gameActive || countdownRunning) return;
+
+    const difficulty = getDifficulty();
+
+    document.getElementById("raceDifficulty").textContent =
+        difficultySettings[difficulty].label + " • 4 RACERS";
+
+    if (!gameFinished) {
+        chooseSentence();
+    }
+}
+
+// ======================================
+// RANDOM SENTENCE
+// ======================================
+
+function chooseSentence() {
+    const difficulty = getDifficulty();
+    const sentences = sentenceBank[difficulty];
+
+    currentSentence =
+        sentences[Math.floor(Math.random() * sentences.length)];
+
+    renderSentence("");
+}
+
+// ======================================
+// DISPLAY SENTENCE
+// ======================================
+
+function renderSentence(value) {
+    display.innerHTML = "";
+
+    for (let i = 0; i < currentSentence.length; i++) {
+        const span = document.createElement("span");
+        span.textContent = currentSentence[i];
+
+        if (i < value.length) {
+            if (value[i] === currentSentence[i]) {
+                span.classList.add("correct");
+            } else {
+                span.classList.add("wrong");
+            }
+        } else if (i === value.length) {
+            span.classList.add("current");
+        }
+
+        display.appendChild(span);
+    }
+}
+
+// ======================================
+// COUNTDOWN
+// ======================================
+
+function startCountdown() {
+    if (gameActive || gameFinished || countdownRunning) return;
+
+    clearInterval(countdownInterval);
+
+    countdownRunning = true;
+
+    let count = 3;
+
+    const overlay = document.getElementById("countdownOverlay");
+    const number = document.getElementById("countdownNumber");
+
+    overlay.classList.remove("hidden");
+    number.textContent = count;
+
+    document.getElementById("startBtn").disabled = true;
+    input.disabled = true;
+
+    countdownInterval = setInterval(() => {
+        count--;
+
+        if (count > 0) {
+            number.textContent = count;
+        } else if (count === 0) {
+            number.textContent = "GO!";
+        } else {
+            clearInterval(countdownInterval);
+            overlay.classList.add("hidden");
+            countdownRunning = false;
+            beginRace();
+        }
+    }, 800);
+}
+
+// ======================================
+// BEGIN RACE
+// ======================================
+
+function beginRace() {
+    chooseSentence();
+
+    positions = [0, 0, 0, 0];
+
+    correctChars = 0;
+    totalTyped = 0;
+    errors = 0;
+
+    elapsed = 0;
+    lastInputValue = "";
+
+    input.value = "";
+
+    updateStats();
+    updateCars();
+
+    gameActive = true;
+    gameFinished = false;
+    gamePaused = false;
+
+    document.getElementById("pauseBtn").disabled = false;
+    document.getElementById("pauseBtn").textContent = "Ⅱ PAUSE";
+
+    startTime = performance.now();
+    lastFrame = startTime;
+
+    input.disabled = false;
+    input.placeholder = "Start typing here...";
+    input.focus();
+
+    animationFrame = requestAnimationFrame(gameLoop);
+}
+
+// ======================================
+// MAIN GAME LOOP
+// ======================================
+
+function gameLoop(now) {
+    if (!gameActive || gamePaused) return;
+
+    const delta = Math.min((now - lastFrame) / 1000, 0.05);
+
+    lastFrame = now;
+    elapsed = (now - startTime) / 1000;
+
+    const settings = difficultySettings[getDifficulty()];
+
+    for (let i = 1; i < 4; i++) {
+        positions[i] += settings.speeds[i] * delta;
+        positions[i] = Math.min(positions[i], 1);
+    }
+
+    updateStats();
+    updateCars();
+
+    if (positions.some(position => position >= 1)) {
+        finishRace();
+        return;
+    }
+
+    animationFrame = requestAnimationFrame(gameLoop);
+}
+
+// ======================================
+// HANDLE PLAYER TYPING
+// ======================================
+
+input.addEventListener("input", () => {
+    if (!gameActive || gamePaused) return;
+
+    let value = input.value;
+
+    if (value.length > currentSentence.length) {
+        value = value.slice(0, currentSentence.length);
+        input.value = value;
+    }
+
+    let prefix = 0;
+
+    while (
+        prefix < lastInputValue.length &&
+        prefix < value.length &&
+        lastInputValue[prefix] === value[prefix]
+    ) {
+        prefix++;
+    }
+
+    let suffix = 0;
+
+    while (
+        suffix < lastInputValue.length - prefix &&
+        suffix < value.length - prefix &&
+        lastInputValue[lastInputValue.length - 1 - suffix] ===
+        value[value.length - 1 - suffix]
+    ) {
+        suffix++;
+    }
+
+    const insertedText = value.slice(prefix, value.length - suffix);
+
+    for (let i = 0; i < insertedText.length; i++) {
+        const typedCharacter = insertedText[i];
+        const expectedCharacter = currentSentence[prefix + i];
+
+        totalTyped++;
+
+        if (typedCharacter !== expectedCharacter) {
+            errors++;
+        }
+    }
+
+    lastInputValue = value;
+
+    correctChars = 0;
+
+    for (let i = 0; i < value.length; i++) {
+        if (value[i] === currentSentence[i]) {
+            correctChars++;
+        }
+    }
+
+    positions[0] = correctChars / currentSentence.length;
+
+    renderSentence(value);
+    updateStats();
+    updateCars();
+
+    if (positions[0] >= 1) {
+        finishRace();
+    }
+});
+
+// ======================================
+// PAUSE AND RESUME
+// ======================================
+
+function pauseGame() {
+    if (!gameActive || gamePaused || gameFinished) return;
+
+    gamePaused = true;
+    pauseStartedAt = performance.now();
+
+    cancelAnimationFrame(animationFrame);
+
+    input.disabled = true;
+
+    document.getElementById("pauseOverlay").classList.remove("hidden");
+    document.getElementById("pauseBtn").textContent = "▶ RESUME";
+}
+
+function resumeGame() {
+    if (!gamePaused || !gameActive) return;
+
+    const now = performance.now();
+
+    startTime += now - pauseStartedAt;
+    lastFrame = now;
+
+    gamePaused = false;
+    input.disabled = false;
+
+    document.getElementById("pauseOverlay").classList.add("hidden");
+    document.getElementById("pauseBtn").textContent = "Ⅱ PAUSE";
+
+    input.focus();
+
+    animationFrame = requestAnimationFrame(gameLoop);
+}
+
+function quitGame() {
+    document.getElementById("pauseOverlay").classList.add("hidden");
+    resetGame();
+}
+
+// ======================================
+// CALCULATE STATISTICS
+// ======================================
+
+function getWPM() {
+    const minutes = Math.max(elapsed / 60, 1 / 60);
+    return Math.round((correctChars / 5) / minutes);
+}
+
+function getAccuracy() {
+    if (totalTyped === 0) return 100;
+
+    const correctAttempts = Math.max(0, totalTyped - errors);
+
+    return Math.round((correctAttempts / totalTyped) * 100);
+}
+
+function updateStats() {
+    const wpm = getWPM();
+    const accuracy = getAccuracy();
+    const progress = Math.round(positions[0] * 100);
+
+    const sorted = [...positions].sort((a, b) => b - a);
+    const rank = sorted.indexOf(positions[0]) + 1;
+
+    document.getElementById("wpm").textContent = wpm;
+
+    document.getElementById("accuracy").textContent =
+        accuracy + "%";
+
+    document.getElementById("timer").textContent =
+        elapsed.toFixed(1) + "s";
+
+    document.getElementById("position").textContent =
+        ordinal(rank);
+
+    document.getElementById("progress").textContent =
+        progress + "% COMPLETE";
+}
+
+// ======================================
+// MOVE CARS
+// ======================================
+
+function updateCars() {
+    positions.forEach((position, index) => {
+        const car = document.getElementById("car" + index);
+
+        car.style.left =
+            (Math.min(position, 1) * 85) + "%";
+    });
+}
+
+// ======================================
+// ORDINAL NUMBERS
+// ======================================
+
+function ordinal(number) {
+    if (number === 1) return "1st";
+    if (number === 2) return "2nd";
+    if (number === 3) return "3rd";
+    return "4th";
+}
+
+// ======================================
+// WINNING EFFECTS
+// ======================================
+
+function celebrateWin() {
+    const track = document.getElementById("track");
+    track.classList.add("winner");
+
+    const colors = ["#38d9ff", "#ffbf45", "#45e39b", "#ff6375", "#ffffff"];
+
+    for (let i = 0; i < 100; i++) {
+        const piece = document.createElement("div");
+
+        piece.className = "confetti";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+
+        piece.style.animationDelay = Math.random() * 1.5 + "s";
+        piece.style.transform =
+            "rotate(" + Math.random() * 360 + "deg)";
+
+        document.body.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 4500);
+    }
+}
+
+function clearWinEffects() {
+    document.getElementById("track").classList.remove("winner");
+
+    document.querySelectorAll(".confetti").forEach(piece => {
+        piece.remove();
+    });
+}
+
+// ======================================
+// FINISH RACE AND SHOW STATISTICS
+// ======================================
+
+function finishRace() {
+    if (gameFinished) return;
+
+    gameFinished = true;
+    gameActive = false;
+    gamePaused = false;
+
+    cancelAnimationFrame(animationFrame);
+
+    document.getElementById("pauseBtn").disabled = true;
+    document.getElementById("pauseOverlay").classList.add("hidden");
+
+    input.disabled = true;
+
+    const sorted = [...positions].sort((a, b) => b - a);
+    const rank = sorted.indexOf(positions[0]) + 1;
+
+    const wpm = getWPM();
+    const accuracy = getAccuracy();
+    const won = rank === 1;
+
+    let newRecord = false;
+
+    if (wpm > personalBest) {
+        personalBest = wpm;
+        localStorage.setItem("typeRushBestWPM", personalBest);
+        newRecord = true;
+    }
+
+    updateBestDisplay();
+
+    document.getElementById("resultTitle").textContent =
+        won ? "🏆 YOU WIN!" : "🏁 RACE OVER!";
+
+    document.getElementById("resultMessage").textContent =
+        won
+        ? "Amazing typing! You reached the finish line first!"
+        : "Good race! Keep practicing to beat your opponents next time.";
+
+    const recordMessage = document.getElementById("recordMessage");
+
+    if (newRecord) {
+        recordMessage.textContent = "🎉 NEW PERSONAL BEST!";
+        recordMessage.classList.add("new-record");
+    } else {
+        recordMessage.textContent = "Keep practicing to beat your record!";
+        recordMessage.classList.remove("new-record");
+    }
+
+    document.getElementById("finalWpm").textContent = wpm;
+    document.getElementById("finalAccuracy").textContent = accuracy + "%";
+    document.getElementById("finalTime").textContent = elapsed.toFixed(1) + "s";
+    document.getElementById("finalPosition").textContent = ordinal(rank);
+    document.getElementById("finalCorrect").textContent = correctChars;
+    document.getElementById("finalErrors").textContent = errors;
+
+    document.getElementById("finalDifficulty").textContent =
+        getDifficulty().toUpperCase();
+
+    document.getElementById("finalBest").textContent = personalBest;
+
+    document.getElementById("resultOverlay").classList.remove("hidden");
+
+    if (won) {
+        celebrateWin();
+    }
+}
+
+// ======================================
+// PLAY AGAIN
+// ======================================
+
+function playAgain() {
+    resetGame();
+    startCountdown();
+}
+
+// ======================================
+// BACK TO THE SAME TYPERUSH PAGE
+// ======================================
+
+function closeResult() {
+    document.getElementById("resultOverlay").classList.add("hidden");
+
+    gameFinished = false;
+    gameActive = false;
+    countdownRunning = false;
+
+    input.disabled = true;
+    input.placeholder = "Press START RACE first...";
+
+    document.getElementById("startBtn").disabled = false;
+    document.getElementById("startBtn").textContent = "START RACE";
+
+    clearWinEffects();
+}
+
+// ======================================
+// RESET GAME
+// ======================================
+
+function resetGame() {
+    cancelAnimationFrame(animationFrame);
+    clearInterval(countdownInterval);
+
+    clearWinEffects();
+
+    gameActive = false;
+    gameFinished = false;
+    countdownRunning = false;
+    gamePaused = false;
+
+    document.getElementById("pauseOverlay").classList.add("hidden");
+    document.getElementById("pauseBtn").disabled = true;
+    document.getElementById("pauseBtn").textContent = "Ⅱ PAUSE";
+
+    positions = [0, 0, 0, 0];
+
+    correctChars = 0;
+    totalTyped = 0;
+    errors = 0;
+
+    elapsed = 0;
+    lastInputValue = "";
+
+    input.value = "";
+    input.disabled = true;
+    input.placeholder = "Press START RACE first...";
+
+    document.getElementById("countdownOverlay").classList.add("hidden");
+    document.getElementById("resultOverlay").classList.add("hidden");
+
+    document.getElementById("startBtn").disabled = false;
+    document.getElementById("startBtn").textContent = "START RACE";
+
+    document.getElementById("wpm").textContent = "0";
+    document.getElementById("accuracy").textContent = "100%";
+    document.getElementById("timer").textContent = "0.0s";
+    document.getElementById("position").textContent = "1st";
+    document.getElementById("progress").textContent = "0% COMPLETE";
+
+    chooseSentence();
+    updateCars();
+    updateBestDisplay();
+}
+
+// ======================================
+// INITIALIZE
+// ======================================
+
+chooseSentence();
+updateCars();
+updateBestDisplay();
+
+document.getElementById("raceDifficulty").textContent =
+    difficultySettings[getDifficulty()].label + " • 4 RACERS";
+
+document.getElementById("countdownOverlay").classList.add("hidden");
+document.getElementById("resultOverlay").classList.add("hidden");
+document.getElementById("pauseOverlay").classList.add("hidden");
+document.getElementById("pauseBtn").disabled = true;
+
+</script>
+
+</body>
+</html>

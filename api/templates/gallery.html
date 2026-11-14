@@ -1,0 +1,844 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gallery - Adrian Cubar</title>
+
+    <style>
+
+        /* =========================
+           GENERAL
+        ========================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #080c12;
+            color: #e8edf2;
+            font-family: "Courier New", monospace;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .site-container {
+            width: 92%;
+            max-width: 1200px;
+            min-height: 100vh;
+            margin: auto;
+            background: #080c12;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .navbar {
+            height: 65px;
+
+            padding: 0 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #171e29;
+        }
+
+        .logo {
+            color: #00e5ff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #778292;
+            font-size: 10px;
+        }
+
+        .nav-links a:hover {
+            color: #00e5ff;
+        }
+
+        .nav-links .active {
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           GALLERY SECTION
+        ========================= */
+
+        .gallery-section {
+            padding: 40px 32px 35px;
+        }
+
+        .section-label {
+            color: #00e5ff;
+
+            font-size: 8px;
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .section-label::before {
+            content: "■ ";
+        }
+
+        .gallery-title {
+            font-size: 27px;
+
+            line-height: 1.2;
+
+            margin-bottom: 7px;
+        }
+
+        .gallery-description {
+            color: #778292;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 8px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+
+        /* =========================
+           FILTER BUTTONS
+        ========================= */
+
+        .filters {
+            display: flex;
+
+            gap: 8px;
+
+            margin-bottom: 20px;
+        }
+
+        .filter-button {
+            background: #111824;
+
+            border: 1px solid #1c2736;
+
+            color: #758192;
+
+            padding: 8px 11px;
+
+            border-radius: 3px;
+
+            font-family: "Courier New", monospace;
+
+            font-size: 6px;
+        }
+
+        .filter-button:hover {
+            border-color: #00e5ff;
+
+            color: #00e5ff;
+        }
+
+        .filter-button.active {
+            background: #00e5ff;
+
+            color: #061016;
+
+            border-color: #00e5ff;
+        }
+
+
+        /* =========================
+           GALLERY GRID
+        ========================= */
+
+        .gallery-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 14px;
+        }
+
+
+        /* =========================
+           GALLERY CARD
+        ========================= */
+
+        .gallery-card {
+            background: #111824;
+
+            border: 1px solid #1d2938;
+
+            border-radius: 6px;
+
+            overflow: hidden;
+
+            transition: 0.2s ease;
+        }
+
+        .gallery-card:hover {
+            border-color: #00e5ff;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* =========================
+           CARD IMAGE
+        ========================= */
+
+        .card-image {
+            width: 100%;
+
+            height: 145px;
+
+            object-fit: cover;
+
+            display: block;
+
+            background: #182131;
+        }
+
+
+        /* =========================
+           CARD CONTENT
+        ========================= */
+
+        .card-content {
+            padding: 13px;
+        }
+
+        .card-type {
+            color: #00e5ff;
+
+            font-size: 6px;
+
+            text-transform: uppercase;
+
+            margin-bottom: 7px;
+        }
+
+        .card-title {
+            color: #e1e7ed;
+
+            font-size: 10px;
+
+            margin-bottom: 7px;
+        }
+
+        .card-date {
+            float: right;
+
+            color: #566171;
+
+            font-size: 6px;
+        }
+
+        .card-description {
+            color: #788494;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 7px;
+
+            line-height: 1.5;
+
+            margin-bottom: 10px;
+        }
+
+        .card-link {
+            color: #00e5ff;
+
+            font-size: 6px;
+
+            display: inline-block;
+        }
+
+        .card-link:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #111824;
+
+            border-top: 1px solid #182230;
+
+            padding: 25px 32px;
+        }
+
+        .footer-top {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding-bottom: 20px;
+        }
+
+        .footer-message {
+            color: #697587;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 8px;
+        }
+
+
+        /* =========================
+           SOCIALS
+        ========================= */
+
+        .socials {
+            display: flex;
+
+            gap: 8px;
+        }
+
+        .social {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #182131;
+
+            color: #8994a3;
+
+            font-size: 8px;
+        }
+
+        .social:hover {
+            color: #00e5ff;
+
+            border: 1px solid #00e5ff;
+        }
+
+
+        /* =========================
+           FOOTER BOTTOM
+        ========================= */
+
+        .footer-bottom {
+            border-top: 1px solid #1d2735;
+
+            padding-top: 15px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+        }
+
+        .copyright {
+            color: #4f5a68;
+
+            font-size: 7px;
+        }
+
+        .back-top {
+            color: #00e5ff;
+
+            font-size: 7px;
+        }
+
+        .back-top:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 8px;
+            }
+
+            .gallery-section {
+                padding: 35px 20px;
+            }
+
+            .gallery-title {
+                font-size: 23px;
+            }
+
+            .filters {
+                flex-wrap: wrap;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card-image {
+                height: 180px;
+            }
+
+            footer {
+                padding: 22px 20px;
+            }
+
+            .footer-top,
+            .footer-bottom {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="site-container" id="top">
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav class="navbar">
+
+        <!-- LOGO -->
+
+        <a href="{% url 'home' %}" class="logo">
+            ADRIAN CUBAR//
+        </a>
+
+
+        <!-- NAV LINKS -->
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">
+                HOME
+            </a>
+
+            <a href="{% url 'skills' %}">
+                Skills
+            </a>
+
+            <a href="{% url 'gallery' %}" class="active">
+                Gallery
+            </a>
+
+            <a href="{% url 'contact' %}">
+                Contact
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         GALLERY CONTENT
+    ========================= -->
+
+    <main>
+
+        <section class="gallery-section">
+
+
+            <!-- SECTION LABEL -->
+
+            <div class="section-label">
+                SYSTEM_MODULE
+            </div>
+
+
+            <!-- TITLE -->
+
+            <h1 class="gallery-title">
+                Gallery &amp; Achievements
+            </h1>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="gallery-description">
+
+                A visual documentation of my certified milestones,
+                project completions, and hackathon highlights.
+
+            </p>
+
+
+
+            <!-- =========================
+                 FILTER BUTTONS
+            ========================= -->
+
+            <div class="filters">
+
+                <button class="filter-button active">
+                    All_Systems
+                </button>
+
+                <button class="filter-button">
+                    Certifications_&_Awards
+                </button>
+
+                <button class="filter-button">
+                    Events_&_Hackathons
+                </button>
+
+                <button class="filter-button">
+                    Project_Milestones
+                </button>
+
+            </div>
+
+
+
+            <!-- =========================
+                 GALLERY GRID
+            ========================= -->
+
+            <div class="gallery-grid">
+
+
+                <!-- =========================
+                     CARD 1
+                ========================= -->
+
+                <div class="gallery-card">
+
+
+                    <img
+                        src="{% static 'images/aws-certification.jpg' %}"
+                        alt="AWS Solutions Architect certification"
+                        class="card-image"
+                    >
+
+
+                    <div class="card-content">
+
+                        <div class="card-type">
+
+                            CERTIFICATION
+
+                            <span class="card-date">
+                                Issued: Oct 2024
+                            </span>
+
+                        </div>
+
+
+                        <h2 class="card-title">
+                            AWS Solutions Architect
+                        </h2>
+
+
+                        <p class="card-description">
+
+                            Architecting high-availability systems on AWS cloud
+                            platforms. Certified credentials.
+
+                        </p>
+
+
+                        <a href="#" class="card-link">
+                            verify_credentials.txt →
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     CARD 2
+                ========================= -->
+
+                <div class="gallery-card">
+
+
+                    <img
+                        src="{% static 'images/hacktech.jpg' %}"
+                        alt="HackTech event"
+                        class="card-image"
+                    >
+
+
+                    <div class="card-content">
+
+                        <div class="card-type">
+
+                            EVENT
+
+                            <span class="card-date">
+                                Awarded: Jan 2025
+                            </span>
+
+                        </div>
+
+
+                        <h2 class="card-title">
+                            HackTech 2025 — 2nd Place
+                        </h2>
+
+
+                        <p class="card-description">
+
+                            Built a localized IoT app for a final cluster
+                            in a 36-hour continuous sprint.
+
+                        </p>
+
+
+                        <a href="#" class="card-link">
+                            verify_credentials.txt →
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     CARD 3
+                ========================= -->
+
+                <div class="gallery-card">
+
+
+                    <img
+                        src="{% static 'images/dashboard.jpg' %}"
+                        alt="Cloud Dashboard UI"
+                        class="card-image"
+                    >
+
+
+                    <div class="card-content">
+
+                        <div class="card-type">
+
+                            MILESTONE
+
+                            <span class="card-date">
+                                Released: Nov 2024
+                            </span>
+
+                        </div>
+
+
+                        <h2 class="card-title">
+                            Cloud Dashboard UI
+                        </h2>
+
+
+                        <p class="card-description">
+
+                            Next.js dashboard integrated with server metrics,
+                            live traffic nodes, and auto-scaling monitors.
+
+                        </p>
+
+
+                        <a href="#" class="card-link">
+                            launch_dashboard.exe →
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =========================
+                     CARD 4
+                ========================= -->
+
+                <div class="gallery-card">
+
+
+                    <img
+                        src="{% static 'images/it-excellence.jpg' %}"
+                        alt="IT Excellence Award 2024"
+                        class="card-image"
+                    >
+
+
+                    <div class="card-content">
+
+                        <div class="card-type">
+
+                            AWARD
+
+                            <span class="card-date">
+                                Winner: Dec 2024
+                            </span>
+
+                        </div>
+
+
+                        <h2 class="card-title">
+                            IT Excellence Award 2024
+                        </h2>
+
+
+                        <p class="card-description">
+
+                            Recognized for streamlining system onboarding
+                            and designing state-of-the-art server procedures.
+
+                        </p>
+
+
+                        <a href="#" class="card-link">
+                            verify_credentials.txt →
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+
+        <div class="footer-top">
+
+
+            <div class="footer-message">
+
+                Let's construct something durable together.
+
+            </div>
+
+
+            <div class="socials">
+
+                <a href="#" class="social">
+                    in
+                </a>
+
+                <a href="#" class="social">
+                    GH
+                </a>
+
+                <a href="#" class="social">
+                    ✉
+                </a>
+
+                <a href="#" class="social">
+                    X
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="footer-bottom">
+
+
+            <div class="copyright">
+
+                © 2026 Adrian Cubar. All rights reserved.
+                Built with systemic integrity.
+
+            </div>
+
+
+            <a href="#top" class="back-top">
+
+                return_to_top.sh ↑
+
+            </a>
+
+        </div>
+
+    </footer>
+
+
+</div>
+
+</body>
+
+</html>

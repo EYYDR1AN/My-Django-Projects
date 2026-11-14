@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Memory Rush | PlayZone</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%}
+body{
+    min-height:100vh;font-family:Arial,sans-serif;color:white;
+    background:radial-gradient(circle at top left,#30205e 0%,transparent 35%),
+    radial-gradient(circle at bottom right,#123c55 0%,transparent 35%),#090b18;
+    padding:10px 18px
+}
+button{font-family:inherit;cursor:pointer}
+header{
+    max-width:1100px;height:40px;margin:0 auto 8px;
+    display:flex;justify-content:space-between;align-items:center
+}
+.logo{font-size:21px;font-weight:900;letter-spacing:1px}
+.logo span{color:#a78bfa}
+.home-btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    color:white;background:#ffffff12;border:1px solid #ffffff25;
+    border-radius:9px;padding:9px 15px;font-size:11px;
+    font-weight:bold;text-decoration:none;letter-spacing:.5px;
+    transition:.2s
+}
+.home-btn:hover{background:#a78bfa;color:#100d20}
+.container{max-width:1000px;margin:auto;text-align:center}
+.tag{
+    display:inline-block;color:#c4b5fd;background:#8b5cf625;
+    border:1px solid #8b5cf655;border-radius:30px;padding:5px 12px;
+    font-size:9px;letter-spacing:2px;font-weight:bold;margin-bottom:7px
+}
+h1{font-size:clamp(27px,3vw,36px);margin-bottom:5px;letter-spacing:1px}
+.subtitle{color:#a5a5bd;font-size:12px;margin-bottom:20px}
+
+/* LEVEL SELECTION */
+#levelScreen{max-width:850px;margin:25px auto 0}
+.level-heading{margin-bottom:25px}
+.level-heading h2{font-size:23px;margin-bottom:8px}
+.level-heading p{color:#a5a5bd;font-size:12px}
+.level-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.level-card{
+    position:relative;min-height:210px;padding:20px 12px;
+    border:1px solid #ffffff25;border-radius:17px;
+    background:linear-gradient(145deg,#20213d,#111629);
+    transition:.25s;overflow:hidden;cursor:pointer
+}
+.level-card:hover{transform:translateY(-7px);border-color:#a78bfa;box-shadow:0 10px 30px #8b5cf633}
+.level-card .level-icon{font-size:42px;margin-bottom:12px}
+.level-card h3{font-size:17px;margin-bottom:7px}
+.level-card p{color:#a5a5bd;font-size:11px;line-height:1.8}
+.level-card .level-number{position:absolute;top:10px;right:12px;color:#ffffff35;font-size:12px;font-weight:bold}
+.level-card.easy{border-top:3px solid #4ade80}
+.level-card.normal{border-top:3px solid #38bdf8}
+.level-card.hard{border-top:3px solid #fbbf24}
+.level-card.expert{border-top:3px solid #fb7185}
+.level-card.easy:hover{box-shadow:0 10px 30px #4ade8033}
+.level-card.normal:hover{box-shadow:0 10px 30px #38bdf833}
+.level-card.hard:hover{box-shadow:0 10px 30px #fbbf2433}
+.level-card.expert:hover{box-shadow:0 10px 30px #fb718533}
+.level-tip{color:#777c9b;font-size:10px;margin-top:23px}
+
+/* GAME SCREEN */
+#gameScreen{display:none;max-width:1000px;margin:auto}
+.game-top{display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:8px}
+.current-level{
+    display:inline-block;color:#c4b5fd;background:#8b5cf625;
+    border:1px solid #8b5cf655;padding:5px 12px;border-radius:20px;
+    font-size:10px;font-weight:bold
+}
+.change-level-btn{
+    border:1px solid #ffffff25;color:#ddd6fe;background:#ffffff10;
+    border-radius:8px;padding:7px 12px;font-size:10px;font-weight:bold;transition:.2s
+}
+.change-level-btn:hover{background:#8b5cf6;color:white}
+.game-title{font-size:clamp(23px,3vw,32px);margin-bottom:3px}
+.game-subtitle{color:#a5a5bd;font-size:10px;margin-bottom:9px}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;width:100%;max-width:650px;margin:0 auto 9px}
+.stat-box{background:#171a30;border:1px solid #ffffff17;padding:7px 5px;border-radius:10px}
+.stat-label{color:#9ca3af;font-size:8px;letter-spacing:1px;margin-bottom:3px}
+.stat-value{font-size:19px;font-weight:bold}
+.timer-value{color:#fbbf24}.score-value{color:#38bdf8}
+.combo-value{color:#c084fc}.matches-value{color:#4ade80}
+
+/* PROGRESS */
+.progress-container{width:100%;max-width:650px;margin:0 auto 9px}
+.progress-info{display:flex;justify-content:space-between;color:#a5a5bd;font-size:9px;margin-bottom:4px}
+.progress-track{width:100%;height:6px;background:#ffffff15;border-radius:20px;overflow:hidden}
+.progress-fill{width:0%;height:100%;background:linear-gradient(90deg,#8b5cf6,#22d3ee);transition:width .3s}
+
+/* CONTROLS */
+.controls{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;margin-bottom:7px}
+.control-btn{
+    border:1px solid #ffffff25;color:white;background:#1d2039;
+    padding:8px 13px;border-radius:8px;font-weight:bold;font-size:10px;transition:.2s
+}
+.control-btn:hover:not(:disabled){transform:translateY(-2px);background:#34305a}
+.control-btn:disabled{opacity:.35;cursor:not-allowed}
+.hint-btn{border-color:#22d3ee66;color:#67e8f9}
+.shuffle-btn{border-color:#fbbf2466;color:#fcd34d}
+.message{min-height:17px;margin:2px 0 6px;color:#c4b5fd;font-size:10px;font-weight:bold}
+
+/* MEMORY CARDS */
+.card-grid{
+    --columns:8;width:100%;max-width:650px;margin:0 auto;
+    display:grid;grid-template-columns:repeat(var(--columns),minmax(0,1fr));
+    gap:7px;perspective:1000px
+}
+.card{aspect-ratio:1/1;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .4s;user-select:none;min-width:0}
+.card.flipped,.card.matched,.card.preview{transform:rotateY(180deg)}
+.card-face{
+    position:absolute;inset:0;border-radius:9px;display:flex;
+    justify-content:center;align-items:center;backface-visibility:hidden;
+    -webkit-backface-visibility:hidden
+}
+.card-front{background:linear-gradient(145deg,#242344,#15172b);border:1px solid #8b5cf655;box-shadow:0 3px 10px #0003}
+.card-front::after{content:"?";font-size:clamp(15px,2vw,23px);font-weight:900;color:#a78bfa}
+.card-back{
+    transform:rotateY(180deg);background:linear-gradient(145deg,#29264d,#1a2544);
+    border:2px solid #38bdf8;font-size:clamp(16px,2.5vw,28px);
+    box-shadow:0 0 10px #38bdf833
+}
+.card.matched .card-back{border-color:#4ade80;background:linear-gradient(145deg,#123d35,#142e36);box-shadow:0 0 12px #4ade8055}
+.card.golden-pair .card-back{border-color:#fbbf24;background:linear-gradient(145deg,#594016,#35270e);box-shadow:0 0 14px #fbbf2477}
+.card.matched{cursor:default;animation:matchPop .35s ease}
+@keyframes matchPop{50%{transform:rotateY(180deg) scale(1.08)}}
+.card.wrong .card-back{border-color:#fb7185;box-shadow:0 0 12px #fb718555}
+
+/* THEMES */
+body[data-theme="galaxy"]{
+    --card-front-bg:linear-gradient(145deg,#242344,#15172b);
+    --card-front-border:#8b5cf655;--card-back-bg:linear-gradient(145deg,#29264d,#1a2544);
+    --card-back-border:#38bdf8;--card-back-glow:#38bdf833;--card-mark:#a78bfa
+}
+body[data-theme="ocean"]{
+    --card-front-bg:linear-gradient(145deg,#123c55,#092638);
+    --card-front-border:#22d3ee88;--card-back-bg:linear-gradient(145deg,#075985,#0e7490);
+    --card-back-border:#67e8f9;--card-back-glow:#22d3ee55;--card-mark:#67e8f9
+}
+body[data-theme="candy"]{
+    --card-front-bg:linear-gradient(145deg,#54234f,#321b43);
+    --card-front-border:#f0abfc88;--card-back-bg:linear-gradient(145deg,#9d4edd,#6d28d9);
+    --card-back-border:#f9a8d4;--card-back-glow:#f0abfc55;--card-mark:#f9a8d4
+}
+body[data-theme="forest"]{
+    --card-front-bg:linear-gradient(145deg,#234b35,#142e26);
+    --card-front-border:#86efac88;--card-back-bg:linear-gradient(145deg,#166534,#14532d);
+    --card-back-border:#86efac;--card-back-glow:#4ade8055;--card-mark:#86efac
+}
+.card-front{background:var(--card-front-bg);border:1px solid var(--card-front-border)}
+.card-front::after{color:var(--card-mark)}
+.card-back{background:var(--card-back-bg);border-color:var(--card-back-border);box-shadow:0 0 10px var(--card-back-glow)}
+.theme-select{border:1px solid #ffffff25;color:#ddd6fe;background:#1d2039;padding:8px 10px;border-radius:8px;font-size:10px;font-weight:bold;outline:none}
+.theme-select option{background:#171a30;color:white}
+.best-time{margin-top:8px;color:#fcd34d!important;font-size:10px!important;font-weight:bold}
+.game-note{color:#777c9b;font-size:9px;margin-top:8px;line-height:1.5;text-align:center}
+
+/* PAUSE SCREEN */
+.pause-overlay{
+    position:fixed;inset:0;z-index:11;display:none;align-items:center;
+    justify-content:center;padding:20px;background:#050611cc;backdrop-filter:blur(7px)
+}
+.pause-overlay.show{display:flex}
+.pause-box{
+    width:100%;max-width:330px;padding:30px 22px;border-radius:18px;
+    text-align:center;background:linear-gradient(145deg,#222044,#111629);
+    border:1px solid #a78bfa77;box-shadow:0 0 45px #8b5cf633
+}
+.pause-box .pause-icon{font-size:45px;margin-bottom:10px;color:#22d3ee}
+.pause-box h2{margin-bottom:8px;color:#22d3ee}
+.pause-box p{color:#b6b6ca;font-size:12px;margin-bottom:18px}
+.pause-buttons{display:flex;flex-direction:row;justify-content:center;gap:12px}
+.resume-btn,.exit-btn,.pause-restart-btn{
+    min-width:90px;height:42px;border:none;border-radius:9px;padding:0 15px;
+    color:white;font-weight:bold;font-size:11px;transition:.2s
+}
+.resume-btn{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.exit-btn{background:linear-gradient(135deg,#ef4444,#be123c)}
+.pause-restart-btn{background:#ffffff18;border:1px solid #ffffff30}
+.resume-btn:hover,.exit-btn:hover,.pause-restart-btn:hover{transform:translateY(-2px);filter:brightness(1.15)}
+
+/* RESULTS SCREEN */
+.overlay{
+    position:fixed;inset:0;background:#050611dd;backdrop-filter:blur(8px);
+    display:none;justify-content:center;align-items:center;z-index:10;padding:20px
+}
+.overlay.show{display:flex}
+.result-box{
+    width:100%;max-width:410px;padding:28px 22px;text-align:center;
+    border-radius:20px;background:linear-gradient(145deg,#222044,#111629);
+    border:1px solid #a78bfa66;box-shadow:0 0 50px #8b5cf633
+}
+.result-icon{font-size:48px;margin-bottom:10px}
+.result-box h2{font-size:25px;margin-bottom:10px}
+.result-box p{color:#b6b6ca;font-size:13px;line-height:1.7;margin-bottom:15px}
+.result-score{color:#fbbf24;font-size:28px;font-weight:bold;margin:15px 0 20px}
+.result-details{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 17px}
+.result-detail{padding:10px 7px;border-radius:10px;background:#ffffff0d;border:1px solid #ffffff14}
+.result-detail span{display:block;color:#a5a5bd;font-size:9px;margin-bottom:5px}
+.result-detail strong{color:#fbbf24;font-size:17px}
+.perfect-bonus{color:#4ade80;font-weight:bold;font-size:12px;margin:-5px 0 14px}
+.result-buttons{display:flex;justify-content:center;gap:12px}
+.play-again,.result-level-btn{
+    min-width:105px;height:42px;border:none;border-radius:10px;padding:0 14px;
+    color:white;font-weight:bold;font-size:11px;transition:.2s
+}
+.play-again{background:linear-gradient(135deg,#8b5cf6,#6366f1)}
+.result-level-btn{background:#ffffff18;border:1px solid #ffffff30}
+.play-again:hover,.result-level-btn:hover{transform:translateY(-2px)}
+
+/* RESPONSIVE */
+@media(max-height:750px) and (min-width:601px){
+    body{padding-top:5px}
+    header{height:32px;margin-bottom:2px}
+    #levelScreen{margin-top:10px}
+    .level-heading{margin-bottom:15px}
+    .level-card{min-height:175px;padding:14px 9px}
+    .level-card .level-icon{font-size:35px;margin-bottom:7px}
+    .level-tip{margin-top:14px}
+    .card-grid{gap:5px;max-width:580px}
+    .game-note{margin-top:4px}
+    .stats{margin-bottom:5px}
+    .progress-container{margin-bottom:5px}
+    .controls{margin-bottom:3px}
+}
+@media(max-width:600px){
+    body{min-height:100vh;padding:10px}
+    header{margin-bottom:15px}
+    .logo{font-size:19px}
+    .home-btn{padding:8px 10px;font-size:9px}
+    #levelScreen{margin-top:15px}
+    .level-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+    .level-card{min-height:175px;padding:15px 8px}
+    .level-card .level-icon{font-size:36px}
+    .level-card h3{font-size:15px}
+    .level-card p{font-size:10px}
+    .level-heading h2{font-size:20px}
+    .level-heading p{line-height:1.6}
+    .game-top{flex-wrap:wrap}
+    .stats{gap:7px;max-width:100%}
+    .stat-box{padding:9px 5px}
+    .stat-value{font-size:20px}
+    .progress-container{margin-bottom:12px}
+    .controls{gap:6px}
+    .control-btn{padding:9px 10px;font-size:10px}
+    .theme-select{padding:9px 8px;max-width:170px}
+    .card-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .card-face{border-radius:10px}
+    .card-back{font-size:28px}
+    .card-front::after{font-size:22px}
+    .game-note{margin:15px 0;font-size:10px}
+    .pause-buttons{flex-wrap:wrap}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">PLAY<span>ZONE</span></div>
+
+    <!-- BACK TO PLAYZONE HOMEPAGE -->
+    <a href="{% url 'home' %}" class="home-btn">
+        BACK TO PLAYZONE
+    </a>
+</header>
+
+<main class="container">
+
+    <!-- LEVEL SELECTION -->
+    <section id="levelScreen">
+        <div class="tag">BRAIN CHALLENGE</div>
+        <h1>MEMORY RUSH</h1>
+        <p class="subtitle">Enter the Mystery Vault and test your memory!</p>
+
+        <div class="level-heading">
+            <h2>🎮 CHOOSE YOUR LEVEL</h2>
+            <p>Select your difficulty. Can you conquer all four challenges?</p>
+        </div>
+
+        <div class="level-grid">
+            <div class="level-card easy" onclick="selectLevel(1)">
+                <span class="level-number">LEVEL 01</span>
+                <div class="level-icon">🌱</div>
+                <h3>EASY</h3>
+                <p>8 Pairs<br>16 Cards<br>60 Seconds</p>
+                <p class="best-time" id="bestTime1">BEST: --</p>
+            </div>
+
+            <div class="level-card normal" onclick="selectLevel(2)">
+                <span class="level-number">LEVEL 02</span>
+                <div class="level-icon">⚡</div>
+                <h3>NORMAL</h3>
+                <p>12 Pairs<br>24 Cards<br>90 Seconds</p>
+                <p class="best-time" id="bestTime2">BEST: --</p>
+            </div>
+
+            <div class="level-card hard" onclick="selectLevel(3)">
+                <span class="level-number">LEVEL 03</span>
+                <div class="level-icon">🔥</div>
+                <h3>HARD</h3>
+                <p>16 Pairs<br>32 Cards<br>120 Seconds</p>
+                <p class="best-time" id="bestTime3">BEST: --</p>
+            </div>
+
+            <div class="level-card expert" onclick="selectLevel(4)">
+                <span class="level-number">LEVEL 04</span>
+                <div class="level-icon">💀</div>
+                <h3>EXPERT</h3>
+                <p>20 Pairs<br>40 Cards<br>150 Seconds</p>
+                <p class="best-time" id="bestTime4">BEST: --</p>
+            </div>
+        </div>
+
+        <p class="level-tip">💡 TIP: Match all the pairs before the timer reaches zero!</p>
+    </section>
+
+    <!-- GAME SCREEN -->
+    <section id="gameScreen">
+
+        <div class="game-top">
+            <span class="current-level" id="currentLevel">LEVEL 01 - EASY</span>
+            <button class="change-level-btn" onclick="showLevelSelection()">
+                BACK
+            </button>
+        </div>
+
+        <h1 class="game-title">MEMORY RUSH</h1>
+        <p class="game-subtitle">Match the hidden pairs before time runs out!</p>
+
+        <section class="stats">
+            <div class="stat-box">
+                <div class="stat-label">TIME LEFT</div>
+                <div class="stat-value timer-value" id="timer">60</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">SCORE</div>
+                <div class="stat-value score-value" id="score">0</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">COMBO</div>
+                <div class="stat-value combo-value" id="combo">x1</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-label">MATCHES</div>
+                <div class="stat-value matches-value" id="matches">0/8</div>
+            </div>
+        </section>
+
+        <div class="progress-container">
+            <div class="progress-info">
+                <span>VAULT PROGRESS</span>
+                <span id="progressText">0%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn hint-btn" id="hintBtn" disabled>💡 HINT (1)</button>
+            <button class="control-btn shuffle-btn" id="shuffleBtn" disabled>🔀 SHUFFLE (1)</button>
+            <button class="control-btn" id="pauseBtn" disabled>PAUSE</button>
+            <button class="control-btn" id="restartBtn">RESTART</button>
+
+            <select class="theme-select" id="themeSelect" aria-label="Card theme">
+                <option value="galaxy">🌌 GALAXY THEME</option>
+                <option value="ocean">🌊 OCEAN THEME</option>
+                <option value="candy">🍬 CANDY THEME</option>
+                <option value="forest">🌿 FOREST THEME</option>
+            </select>
+        </div>
+
+        <div class="message" id="message">Memorize the cards and find the matching pairs!</div>
+        <div class="card-grid" id="cardGrid"></div>
+
+        <p class="game-note">
+            MATCH ALL THE PAIRS TO ESCAPE THE VAULT.<br>
+            Find the Golden Pair for bonus points. Build combos to earn extra time.<br>
+            Finish with 100% accuracy to earn the PERFECT RUN BONUS!
+        </p>
+    </section>
+</main>
+
+<!-- PAUSE SCREEN -->
+<div class="pause-overlay" id="pauseOverlay">
+    <div class="pause-box">
+        <div class="pause-icon">Ⅱ</div>
+        <h2>GAME PAUSED</h2>
+        <p>Take a breath. Your timer and board are on hold.</p>
+
+        <div class="pause-buttons">
+            <button class="resume-btn" id="resumeBtn">RESUME</button>
+            <button class="pause-restart-btn" id="pauseRestartBtn">RESTART</button>
+            <button class="exit-btn" id="exitGameBtn">BACK</button>
+        </div>
+    </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="overlay" id="resultOverlay">
+    <div class="result-box">
+        <div class="result-icon" id="resultIcon">🏆</div>
+        <h2 id="resultTitle">VAULT UNLOCKED!</h2>
+        <p id="resultDescription">You successfully completed the challenge!</p>
+        <div class="result-score" id="finalScore">0 POINTS</div>
+
+        <div class="result-details">
+            <div class="result-detail">
+                <span>ACCURACY</span>
+                <strong id="resultAccuracy">0%</strong>
+            </div>
+            <div class="result-detail">
+                <span>TIME TAKEN</span>
+                <strong id="resultTime">0:00</strong>
+            </div>
+            <div class="result-detail">
+                <span>BEST TIME</span>
+                <strong id="resultBestTime">--</strong>
+            </div>
+            <div class="result-detail">
+                <span>FLIPS</span>
+                <strong id="resultFlips">0</strong>
+            </div>
+        </div>
+
+        <div class="perfect-bonus" id="perfectBonus" style="display:none;">
+            ✨ PERFECT RUN BONUS +1000
+        </div>
+
+        <div class="result-buttons">
+            <button class="play-again" id="playAgainBtn">PLAY AGAIN</button>
+            <button class="result-level-btn" id="resultLevelBtn">BACK</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* GAME LEVEL SETTINGS */
+const levels = {
+    1:{name:"EASY",pairs:8,time:60,columns:4},
+    2:{name:"NORMAL",pairs:12,time:90,columns:6},
+    3:{name:"HARD",pairs:16,time:120,columns:8},
+    4:{name:"EXPERT",pairs:20,time:150,columns:8}
+};
+
+const symbols=[
+    "🎮","🎯","🚀","🎧","⭐","🔥","💎","👾",
+    "🍕","🐉","⚡","🌈","🦄","🍀","🎲","🏆",
+    "🌙","🧩","🎸","🦋"
+];
+
+/* ELEMENTS */
+const levelScreen=document.getElementById("levelScreen");
+const gameScreen=document.getElementById("gameScreen");
+const cardGrid=document.getElementById("cardGrid");
+
+const timerDisplay=document.getElementById("timer");
+const scoreDisplay=document.getElementById("score");
+const comboDisplay=document.getElementById("combo");
+const matchesDisplay=document.getElementById("matches");
+
+const progressFill=document.getElementById("progressFill");
+const progressText=document.getElementById("progressText");
+const message=document.getElementById("message");
+const currentLevelDisplay=document.getElementById("currentLevel");
+
+const hintBtn=document.getElementById("hintBtn");
+const shuffleBtn=document.getElementById("shuffleBtn");
+const restartBtn=document.getElementById("restartBtn");
+const pauseBtn=document.getElementById("pauseBtn");
+const resumeBtn=document.getElementById("resumeBtn");
+const exitGameBtn=document.getElementById("exitGameBtn");
+const pauseRestartBtn=document.getElementById("pauseRestartBtn");
+
+const pauseOverlay=document.getElementById("pauseOverlay");
+const themeSelect=document.getElementById("themeSelect");
+
+const resultAccuracy=document.getElementById("resultAccuracy");
+const resultTime=document.getElementById("resultTime");
+const resultBestTime=document.getElementById("resultBestTime");
+const resultFlips=document.getElementById("resultFlips");
+const perfectBonus=document.getElementById("perfectBonus");
+
+const resultOverlay=document.getElementById("resultOverlay");
+const resultIcon=document.getElementById("resultIcon");
+const resultTitle=document.getElementById("resultTitle");
+const resultDescription=document.getElementById("resultDescription");
+const finalScore=document.getElementById("finalScore");
+
+const playAgainBtn=document.getElementById("playAgainBtn");
+const resultLevelBtn=document.getElementById("resultLevelBtn");
+
+/* GAME VARIABLES */
+let selectedLevel=1;
+let totalPairs=8;
+let cards=[];
+let firstCard=null;
+let secondCard=null;
+
+let score=0;
+let time=60;
+let matchedPairs=0;
+let combo=0;
+
+let gameActive=false;
+let lockBoard=true;
+
+let timerInterval=null;
+let countdownInterval=null;
+let mismatchTimeout=null;
+let hintTimeout=null;
+
+let hintUsed=false;
+let shuffleUsed=false;
+let isPaused=false;
+let wasBoardLocked=false;
+
+let elapsedSeconds=0;
+let totalFlips=0;
+let perfectRunBonus=0;
+
+let mismatchDeadline=0;
+let hintDeadline=0;
+let mismatchRemaining=0;
+let hintRemaining=0;
+
+let mismatchCallbackPending=false;
+let hintCallbackPending=false;
+
+let bestTimes={};
+let goldenSymbol=null;
+
+/* UTILITY FUNCTIONS */
+function shuffleArray(array){
+    for(let i=array.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
+    }
+    return array;
+}
+
+function stopAllTimers(){
+    clearInterval(timerInterval);
+    clearInterval(countdownInterval);
+    clearTimeout(mismatchTimeout);
+    clearTimeout(hintTimeout);
+
+    timerInterval=null;
+    countdownInterval=null;
+    mismatchTimeout=null;
+    hintTimeout=null;
+}
+
+function formatTime(seconds){
+    const safeSeconds=Math.max(0,Math.floor(seconds));
+    const minutes=Math.floor(safeSeconds/60);
+    const remaining=safeSeconds%60;
+    return minutes+":"+String(remaining).padStart(2,"0");
+}
+
+function loadBestTimes(){
+    try{
+        bestTimes=JSON.parse(localStorage.getItem("memoryRushBestTimes")||"{}")||{};
+    }catch(error){
+        bestTimes={};
+    }
+    updateBestTimeLabels();
+}
+
+function saveBestTime(levelNumber,seconds){
+    const previous=Number(bestTimes[levelNumber]);
+
+    if(!previous||seconds<previous){
+        bestTimes[levelNumber]=seconds;
+        localStorage.setItem("memoryRushBestTimes",JSON.stringify(bestTimes));
+    }
+    updateBestTimeLabels();
+}
+
+function updateBestTimeLabels(){
+    for(let i=1;i<=4;i++){
+        const label=document.getElementById("bestTime"+i);
+        if(!label)continue;
+
+        label.textContent=bestTimes[i]
+            ?"BEST: "+formatTime(bestTimes[i])
+            :"BEST: --";
+    }
+}
+
+function applyTheme(theme){
+    const allowedThemes=["galaxy","ocean","candy","forest"];
+    const safeTheme=allowedThemes.includes(theme)?theme:"galaxy";
+
+    document.body.dataset.theme=safeTheme;
+    themeSelect.value=safeTheme;
+    localStorage.setItem("memoryRushTheme",safeTheme);
+}
+
+function getAccuracy(){
+    if(totalFlips===0)return 0;
+    return Math.round(((matchedPairs*2)/totalFlips)*100);
+}
+
+function finishMismatch(){
+    if(!firstCard||!secondCard)return;
+
+    firstCard.classList.remove("flipped","wrong");
+    secondCard.classList.remove("flipped","wrong");
+
+    firstCard=null;
+    secondCard=null;
+    lockBoard=false;
+
+    mismatchTimeout=null;
+    mismatchCallbackPending=false;
+}
+
+function finishHint(){
+    cards.forEach(card=>card.classList.remove("preview"));
+    hintTimeout=null;
+    hintCallbackPending=false;
+}
+
+/* PAUSE AND RESUME */
+function pauseGame(){
+    if(!gameActive||isPaused)return;
+
+    isPaused=true;
+    wasBoardLocked=lockBoard;
+    lockBoard=true;
+
+    pauseOverlay.classList.add("show");
+    pauseBtn.textContent="RESUME";
+
+    if(mismatchTimeout){
+        clearTimeout(mismatchTimeout);
+        mismatchTimeout=null;
+        mismatchRemaining=Math.max(0,mismatchDeadline-Date.now());
+        mismatchCallbackPending=true;
+    }
+
+    if(hintTimeout){
+        clearTimeout(hintTimeout);
+        hintTimeout=null;
+        hintRemaining=Math.max(0,hintDeadline-Date.now());
+        hintCallbackPending=true;
+    }
+}
+
+function resumeGame(){
+    if(!isPaused||!gameActive)return;
+
+    isPaused=false;
+    pauseOverlay.classList.remove("show");
+    pauseBtn.textContent="PAUSE";
+
+    if(mismatchCallbackPending){
+        mismatchDeadline=Date.now()+mismatchRemaining;
+        mismatchTimeout=setTimeout(finishMismatch,mismatchRemaining);
+        lockBoard=true;
+    }else{
+        lockBoard=wasBoardLocked;
+    }
+
+    if(hintCallbackPending){
+        hintDeadline=Date.now()+hintRemaining;
+        hintTimeout=setTimeout(finishHint,hintRemaining);
+    }
+}
+
+/* LEVEL SELECTION */
+function selectLevel(levelNumber){
+    selectedLevel=levelNumber;
+    const level=levels[selectedLevel];
+
+    totalPairs=level.pairs;
+    time=level.time;
+
+    levelScreen.style.display="none";
+    gameScreen.style.display="block";
+
+    currentLevelDisplay.textContent=
+        "LEVEL 0"+selectedLevel+" - "+level.name;
+
+    startGame();
+}
+
+function showLevelSelection(){
+    stopAllTimers();
+
+    gameActive=false;
+    isPaused=false;
+    lockBoard=true;
+
+    firstCard=null;
+    secondCard=null;
+
+    mismatchCallbackPending=false;
+    hintCallbackPending=false;
+    mismatchRemaining=0;
+    hintRemaining=0;
+
+    pauseOverlay.classList.remove("show");
+    resultOverlay.classList.remove("show");
+
+    pauseBtn.textContent="PAUSE";
+    pauseBtn.disabled=true;
+    hintBtn.disabled=true;
+    shuffleBtn.disabled=true;
+
+    gameScreen.style.display="none";
+    levelScreen.style.display="block";
+
+    cardGrid.innerHTML="";
+    message.textContent="Choose a level to start playing!";
+
+    updateBestTimeLabels();
+}
+
+/* CREATE MEMORY BOARD */
+function createBoard(){
+    cardGrid.innerHTML="";
+    cardGrid.style.setProperty("--columns",levels[selectedLevel].columns);
+
+    let selectedSymbols=symbols.slice(0,totalPairs);
+
+    let cardSymbols=shuffleArray([
+        ...selectedSymbols,
+        ...selectedSymbols
+    ]);
+
+    goldenSymbol=selectedSymbols[
+        Math.floor(Math.random()*selectedSymbols.length)
+    ];
+
+    cards=[];
+
+    cardSymbols.forEach(symbol=>{
+        const card=document.createElement("div");
+
+        card.className="card";
+        card.dataset.symbol=symbol;
+
+        if(symbol===goldenSymbol){
+            card.classList.add("golden-pair");
+        }
+
+        card.innerHTML=`
+            <div class="card-face card-front"></div>
+            <div class="card-face card-back">${symbol}</div>
+        `;
+
+        card.addEventListener("click",()=>flipCard(card));
+
+        cardGrid.appendChild(card);
+        cards.push(card);
+    });
+}
+
+/* RESET GAME */
+function resetStats(){
+    stopAllTimers();
+
+    const level=levels[selectedLevel];
+
+    score=0;
+    time=level.time;
+    matchedPairs=0;
+    combo=0;
+
+    firstCard=null;
+    secondCard=null;
+
+    lockBoard=true;
+    gameActive=false;
+
+    hintUsed=false;
+    shuffleUsed=false;
+    isPaused=false;
+    wasBoardLocked=false;
+
+    elapsedSeconds=0;
+    totalFlips=0;
+    perfectRunBonus=0;
+
+    mismatchRemaining=0;
+    hintRemaining=0;
+
+    mismatchCallbackPending=false;
+    hintCallbackPending=false;
+
+    pauseOverlay.classList.remove("show");
+
+    pauseBtn.disabled=true;
+    pauseBtn.textContent="PAUSE";
+
+    scoreDisplay.textContent="0";
+    timerDisplay.textContent=time;
+    timerDisplay.style.color="#fbbf24";
+
+    comboDisplay.textContent="x1";
+    matchesDisplay.textContent="0/"+totalPairs;
+
+    progressFill.style.width="0%";
+    progressText.textContent="0%";
+
+    hintBtn.disabled=true;
+    shuffleBtn.disabled=true;
+
+    hintBtn.textContent="💡 HINT (1)";
+    shuffleBtn.textContent="🔀 SHUFFLE (1)";
+
+    perfectBonus.style.display="none";
+    resultOverlay.classList.remove("show");
+}
+
+/* START GAME */
+function startGame(){
+    resetStats();
+    createBoard();
+
+    message.textContent="Memorize the cards!";
+
+    cards.forEach(card=>card.classList.add("preview"));
+
+    let count=3;
+    message.textContent="Game starts in "+count+"...";
+
+    countdownInterval=setInterval(()=>{
+        count--;
+
+        if(count>0){
+            message.textContent="Game starts in "+count+"...";
+        }else{
+            clearInterval(countdownInterval);
+            countdownInterval=null;
+
+            cards.forEach(card=>card.classList.remove("preview"));
+
+            gameActive=true;
+            lockBoard=false;
+
+            hintBtn.disabled=false;
+            shuffleBtn.disabled=false;
+            pauseBtn.disabled=false;
+
+            message.textContent="Find the matching pairs. Good luck!";
+            startTimer();
+        }
+    },1000);
+}
+
+/* TIMER */
+function startTimer(){
+    timerInterval=setInterval(()=>{
+        if(!gameActive||isPaused)return;
+
+        time--;
+        elapsedSeconds++;
+
+        timerDisplay.textContent=time;
+        timerDisplay.style.color=time<=10?"#fb7185":"#fbbf24";
+
+        if(time<=0){
+            endGame(false);
+        }
+    },1000);
+}
+
+/* FLIP CARDS */
+function flipCard(card){
+    if(!gameActive||isPaused||lockBoard)return;
+    if(card.classList.contains("flipped"))return;
+    if(card.classList.contains("matched"))return;
+
+    card.classList.add("flipped");
+    totalFlips++;
+
+    if(!firstCard){
+        firstCard=card;
+        return;
+    }
+
+    secondCard=card;
+    lockBoard=true;
+
+    checkMatch();
+}
+
+/* CHECK MATCH */
+function checkMatch(){
+    if(firstCard.dataset.symbol===secondCard.dataset.symbol){
+        handleMatch();
+    }else{
+        handleMismatch();
+    }
+}
+
+/* CORRECT MATCH */
+function handleMatch(){
+    const isGolden=firstCard.dataset.symbol===goldenSymbol;
+
+    firstCard.classList.add("matched");
+    secondCard.classList.add("matched");
+
+    firstCard.classList.remove("flipped");
+    secondCard.classList.remove("flipped");
+
+    matchedPairs++;
+    combo++;
+
+    const multiplier=Math.min(combo,5);
+    let points=100*multiplier;
+
+    if(isGolden){
+        points+=500;
+        message.textContent="🌟 GOLDEN PAIR! +500 BONUS POINTS!";
+    }else{
+        message.textContent="MATCH FOUND! +"+points+" POINTS";
+    }
+
+    score+=points;
+
+    if(combo%3===0){
+        time+=5;
+        timerDisplay.textContent=time;
+        message.textContent+=" +5 SECONDS!";
+    }
+
+    updateDisplay();
+    playTone(620,0.12);
+
+    firstCard=null;
+    secondCard=null;
+    lockBoard=false;
+
+    if(matchedPairs===totalPairs){
+        endGame(true);
+    }
+}
+
+/* WRONG MATCH */
+function handleMismatch(){
+    combo=0;
+    comboDisplay.textContent="x1";
+
+    firstCard.classList.add("wrong");
+    secondCard.classList.add("wrong");
+
+    message.textContent="Not a match! Try again.";
+
+    playTone(180,0.15);
+
+    mismatchDeadline=Date.now()+800;
+    mismatchRemaining=800;
+    mismatchCallbackPending=true;
+
+    mismatchTimeout=setTimeout(finishMismatch,800);
+}
+
+/* UPDATE DISPLAY */
+function updateDisplay(){
+    scoreDisplay.textContent=score;
+    comboDisplay.textContent="x"+Math.min(combo,5);
+    matchesDisplay.textContent=matchedPairs+"/"+totalPairs;
+
+    const percent=(matchedPairs/totalPairs)*100;
+    progressFill.style.width=percent+"%";
+    progressText.textContent=Math.round(percent)+"%";
+}
+
+/* HINT POWER-UP */
+function useHint(){
+    if(!gameActive||hintUsed||lockBoard||isPaused)return;
+
+    hintUsed=true;
+    hintBtn.disabled=true;
+    hintBtn.textContent="💡 HINT USED";
+
+    const unmatched=cards.filter(card=>
+        !card.classList.contains("matched")
+    );
+
+    unmatched.forEach(card=>card.classList.add("preview"));
+
+    message.textContent="💡 Hint activated! Remember the card positions.";
+
+    hintDeadline=Date.now()+1500;
+    hintRemaining=1500;
+    hintCallbackPending=true;
+
+    hintTimeout=setTimeout(finishHint,1500);
+}
+
+/* SHUFFLE POWER-UP */
+function useShuffle(){
+    if(!gameActive||shuffleUsed||lockBoard||isPaused)return;
+
+    shuffleUsed=true;
+    shuffleBtn.disabled=true;
+    shuffleBtn.textContent="🔀 SHUFFLE USED";
+
+    const unmatched=cards.filter(card=>
+        !card.classList.contains("matched")
+    );
+
+    let remainingSymbols=shuffleArray(
+        unmatched.map(card=>card.dataset.symbol)
+    );
+
+    unmatched.forEach((card,index)=>{
+        const newSymbol=remainingSymbols[index];
+
+        card.dataset.symbol=newSymbol;
+        card.querySelector(".card-back").textContent=newSymbol;
+
+        card.classList.toggle(
+            "golden-pair",
+            newSymbol===goldenSymbol
+        );
+    });
+
+    message.textContent="🔀 Remaining cards have been shuffled!";
+    playTone(450,0.15);
+}
+
+/* END GAME AND RESULTS */
+function endGame(won){
+    if(!gameActive)return;
+
+    gameActive=false;
+    isPaused=false;
+    lockBoard=true;
+
+    stopAllTimers();
+    pauseOverlay.classList.remove("show");
+
+    pauseBtn.disabled=true;
+    pauseBtn.textContent="PAUSE";
+
+    hintBtn.disabled=true;
+    shuffleBtn.disabled=true;
+
+    const accuracy=getAccuracy();
+
+    let bestForLevel=bestTimes[selectedLevel]
+        ?Number(bestTimes[selectedLevel])
+        :null;
+
+    if(won){
+        if(accuracy===100){
+            perfectRunBonus=1000;
+            score+=perfectRunBonus;
+            scoreDisplay.textContent=score;
+            perfectBonus.style.display="block";
+        }else{
+            perfectBonus.style.display="none";
+        }
+
+        saveBestTime(selectedLevel,elapsedSeconds);
+        bestForLevel=Number(bestTimes[selectedLevel]);
+
+        resultIcon.textContent="🏆";
+        resultTitle.textContent="VAULT UNLOCKED!";
+
+        resultDescription.textContent=
+            "Amazing! You completed Level "+selectedLevel+
+            " - "+levels[selectedLevel].name+
+            " and matched all "+totalPairs+" pairs!";
+
+        message.textContent="🎉 CONGRATULATIONS! LEVEL COMPLETED!";
+        playTone(850,0.3);
+    }else{
+        perfectBonus.style.display="none";
+
+        resultIcon.textContent="⏰";
+        resultTitle.textContent="TIME'S UP!";
+
+        resultDescription.textContent=
+            "The vault remains locked! You matched "+
+            matchedPairs+" out of "+totalPairs+
+            " pairs. Try again!";
+
+        message.textContent="Time is up! The vault is still locked.";
+    }
+
+    finalScore.textContent=score+" POINTS";
+    resultAccuracy.textContent=accuracy+"%";
+    resultTime.textContent=formatTime(elapsedSeconds);
+
+    resultBestTime.textContent=bestForLevel
+        ?formatTime(bestForLevel)
+        :"--";
+
+    resultFlips.textContent=totalFlips;
+
+    resultOverlay.classList.add("show");
+}
+
+/* SOUND EFFECTS */
+function playTone(frequency,duration){
+    try{
+        const audioContext=new(
+            window.AudioContext||window.webkitAudioContext
+        )();
+
+        const oscillator=audioContext.createOscillator();
+        const gain=audioContext.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.frequency.value=frequency;
+        oscillator.type="sine";
+
+        gain.gain.setValueAtTime(0.08,audioContext.currentTime);
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.001,
+            audioContext.currentTime+duration
+        );
+
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime+duration);
+
+        oscillator.onended=()=>audioContext.close();
+    }catch(error){
+        // Sound is optional if the browser does not support it.
+    }
+}
+
+/* BUTTON EVENTS */
+hintBtn.addEventListener("click",useHint);
+shuffleBtn.addEventListener("click",useShuffle);
+
+pauseBtn.addEventListener("click",()=>{
+    if(isPaused){
+        resumeGame();
+    }else{
+        pauseGame();
+    }
+});
+
+resumeBtn.addEventListener("click",resumeGame);
+
+exitGameBtn.addEventListener("click",showLevelSelection);
+
+pauseRestartBtn.addEventListener("click",startGame);
+
+themeSelect.addEventListener("change",()=>{
+    applyTheme(themeSelect.value);
+});
+
+restartBtn.addEventListener("click",startGame);
+playAgainBtn.addEventListener("click",startGame);
+resultLevelBtn.addEventListener("click",showLevelSelection);
+
+/* LOAD SAVED DATA */
+loadBestTimes();
+
+applyTheme(
+    localStorage.getItem("memoryRushTheme")||"galaxy"
+);
+</script>
+
+</body>
+</html>

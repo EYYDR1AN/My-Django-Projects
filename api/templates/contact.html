@@ -1,0 +1,702 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact - Adrian Cubar</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #080c12;
+            color: #e8edf2;
+            font-family: "Courier New", monospace;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .site-container {
+            width: 92%;
+            max-width: 1200px;
+            margin: auto;
+            background: #080c12;
+            min-height: 100vh;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 65px;
+            border-bottom: 1px solid #171e29;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 32px;
+        }
+
+        .logo {
+            color: #00e5ff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #778292;
+            font-size: 10px;
+        }
+
+        .nav-links a:hover {
+            color: #00e5ff;
+        }
+
+        .nav-links .active {
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           CONTACT HEADER
+        ========================= */
+
+        .contact-section {
+            padding: 45px 32px 55px;
+        }
+
+        .section-label {
+            color: #00e5ff;
+            font-size: 8px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .section-label::before {
+            content: "■ ";
+        }
+
+        .contact-title {
+            font-size: 27px;
+            margin-bottom: 8px;
+        }
+
+        .contact-subtitle {
+            color: #778292;
+            font-family: Arial, sans-serif;
+            font-size: 9px;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           CONTACT GRID
+        ========================= */
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.9fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+
+        /* =========================
+           FORM CARD
+        ========================= */
+
+        .form-card {
+            background: #111824;
+            border: 1px solid #1e2938;
+            border-radius: 6px;
+
+            padding: 22px;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 18px;
+        }
+
+        .form-title {
+            color: #dce2e8;
+            font-size: 8px;
+            font-weight: bold;
+        }
+
+        .form-title::before {
+            content: "■ ";
+            color: #00e5ff;
+        }
+
+        .form-status {
+            color: #4c596b;
+            font-size: 6px;
+        }
+
+
+        /* =========================
+           DJANGO FORM
+        ========================= */
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+
+            color: #8792a1;
+            font-size: 7px;
+
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+
+            background: #192334;
+            border: 1px solid #192334;
+            border-radius: 2px;
+
+            color: #dce2e8;
+
+            padding: 9px;
+
+            font-family: "Courier New", monospace;
+            font-size: 8px;
+
+            outline: none;
+        }
+
+        .form-group input {
+            height: 32px;
+        }
+
+        .form-group textarea {
+            height: 85px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #00e5ff;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #596577;
+        }
+
+
+        /* =========================
+           ERRORS
+        ========================= */
+
+        .error {
+            color: #ff6874;
+            font-size: 7px;
+            margin-top: 4px;
+        }
+
+
+        /* =========================
+           SUBMIT AREA
+        ========================= */
+
+        .submit-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-top: 5px;
+        }
+
+        .submit-button {
+            background: #00dff7;
+            color: #061016;
+
+            border: none;
+            border-radius: 2px;
+
+            padding: 10px 14px;
+
+            font-family: "Courier New", monospace;
+            font-size: 7px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background: #5ceeff;
+        }
+
+        .submit-note {
+            color: #4f5c6d;
+            font-size: 6px;
+        }
+
+
+        /* =========================
+           CONNECTION CARD
+        ========================= */
+
+        .connection-card {
+            background: #111824;
+            border: 1px solid #1e2938;
+            border-radius: 6px;
+
+            padding: 22px;
+        }
+
+        .connection-title {
+            color: #00e5ff;
+            font-size: 10px;
+            margin-bottom: 20px;
+        }
+
+        .connection-title::before {
+            content: "> ";
+        }
+
+        .contact-info {
+            margin-bottom: 15px;
+        }
+
+        .contact-label {
+            display: block;
+
+            color: #697587;
+            font-size: 6px;
+
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .contact-value {
+            color: #dce2e8;
+            font-size: 8px;
+        }
+
+        .contact-value a:hover {
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           SYSTEM CONNECTION STATUS
+        ========================= */
+
+        .connection-status {
+            background: #192334;
+            padding: 10px;
+
+            margin-top: 20px;
+
+            color: #00e5ff;
+            font-size: 7px;
+        }
+
+        .connection-status::before {
+            content: "● ";
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #111824;
+            border-top: 1px solid #182230;
+
+            padding: 25px 32px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding-bottom: 20px;
+        }
+
+        .footer-message {
+            color: #697587;
+            font-family: Arial, sans-serif;
+            font-size: 8px;
+        }
+
+        .socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .social {
+            width: 27px;
+            height: 27px;
+
+            border-radius: 50%;
+
+            background: #182131;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            color: #8b96a5;
+            font-size: 9px;
+        }
+
+        .social:hover {
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1d2735;
+
+            padding-top: 15px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .copyright {
+            color: #4f5a68;
+            font-size: 7px;
+        }
+
+        .back-top {
+            color: #00e5ff;
+            font-size: 7px;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+                padding: 20px;
+
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 8px;
+            }
+
+            .contact-section {
+                padding: 35px 20px;
+            }
+
+            .contact-title {
+                font-size: 23px;
+            }
+
+            .footer-top,
+            .footer-bottom {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="site-container" id="top">
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}" class="logo">
+            ADRIAN CUBAR//
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">
+                HOME
+            </a>
+
+            <a href="{% url 'skills' %}">
+                SKILLS
+            </a>
+
+            <a href="{% url 'gallery' %}">
+                GALLERY
+            </a>
+
+            <a href="{% url 'contact' %}" class="active">
+                CONTACT
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         CONTACT CONTENT
+    ========================== -->
+
+    <main class="contact-section">
+
+        <div class="section-label">
+            SYSTEM_MODULE
+        </div>
+
+        <h1 class="contact-title">
+            Get In Touch
+        </h1>
+
+        <p class="contact-subtitle">
+            Send an encrypted system message or establish a link via direct communication channels.
+        </p>
+
+
+        <div class="contact-grid">
+
+
+            <!-- =====================
+                 CONTACT FORM
+            ====================== -->
+
+            <div class="form-card">
+
+                <div class="form-header">
+
+                    <div class="form-title">
+                        SECURE_COMMS_V1.6
+                    </div>
+
+                    <div class="form-status">
+                        SSL_CONNECTED
+                    </div>
+
+                </div>
+
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+
+                    {% for field in form %}
+
+                        <div class="form-group">
+
+                            {{ field.label_tag }}
+
+                            {{ field }}
+
+                            {% if field.errors %}
+                                {% for error in field.errors %}
+                                    <div class="error">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+
+                    <div class="submit-row">
+
+                        <button type="submit" class="submit-button">
+                            SEND_MESSAGE.sh →
+                        </button>
+
+                        <span class="submit-note">
+                            [Press Enter or Click to Dispatch]
+                        </span>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+            <!-- =====================
+                 CONNECTION INFO
+            ====================== -->
+
+            <div class="connection-card">
+
+                <h2 class="connection-title">
+                    Connection Nodes
+                </h2>
+
+
+                <div class="contact-info">
+
+                    <span class="contact-label">
+                        DIRECT_MAIL
+                    </span>
+
+                    <span class="contact-value">
+                        hello@adriancubar.dev
+                    </span>
+
+                </div>
+
+
+                <div class="contact-info">
+
+                    <span class="contact-label">
+                        TELEPHONE_VIP
+                    </span>
+
+                    <span class="contact-value">
+                        +63 (38) 501-8172
+                    </span>
+
+                </div>
+
+
+                <div class="contact-info">
+
+                    <span class="contact-label">
+                        SYS_LOCATION
+                    </span>
+
+                    <span class="contact-value">
+                        Panglao, Bohol, Philippines (PST / GMT+8)
+                    </span>
+
+                </div>
+
+
+                <div class="connection-status">
+                    SYSTEM OPERATIONAL // ALL SYSTEMS OK
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-top">
+
+            <div class="footer-message">
+                Let's construct something durable together.
+            </div>
+
+
+            <div class="socials">
+
+                <a href="#" class="social">
+                    in
+                </a>
+
+                <a href="#" class="social">
+                    GH
+                </a>
+
+                <a href="#" class="social">
+                    ✉
+                </a>
+
+                <a href="#" class="social">
+                    X
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="copyright">
+                © 2026 Adrian Cubar. All rights reserved.
+                Built with systemic integrity.
+            </div>
+
+            <a href="#top" class="back-top">
+                return_to_top.sh ↑
+            </a>
+
+        </div>
+
+    </footer>
+
+</div>
+
+</body>
+</html>

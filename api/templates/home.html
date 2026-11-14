@@ -1,0 +1,846 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Home - Adrian Cubar</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #080c12;
+            color: #e8edf2;
+            font-family: "Courier New", monospace;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .site-container {
+            width: 92%;
+            max-width: 1200px;
+            min-height: 100vh;
+            margin: auto;
+            background: #080c12;
+        }
+
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .navbar {
+            height: 65px;
+
+            padding: 0 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #171e29;
+        }
+
+        .logo {
+            color: #00e5ff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #778292;
+            font-size: 10px;
+        }
+
+        .nav-links a:hover {
+            color: #00e5ff;
+        }
+
+        .nav-links .active {
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           HERO SECTION
+        ========================= */
+
+        .hero {
+            min-height: 265px;
+
+            padding: 34px 32px 25px;
+
+            display: grid;
+            grid-template-columns: 1fr 200px;
+            gap: 35px;
+
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .availability {
+            display: inline-block;
+
+            color: #00e5ff;
+
+            border: 1px solid #00a9bd;
+            border-radius: 20px;
+
+            padding: 5px 9px;
+
+            font-size: 6px;
+
+            margin-bottom: 10px;
+        }
+
+        .availability::before {
+            content: "● ";
+        }
+
+        .hero-title {
+            font-size: 25px;
+            line-height: 1.05;
+
+            margin-bottom: 12px;
+        }
+
+        .hero-description {
+            color: #778292;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 9px;
+            line-height: 1.6;
+
+            max-width: 600px;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================
+           HERO BUTTONS
+        ========================= */
+
+        .hero-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .button {
+            display: inline-block;
+
+            padding: 9px 12px;
+
+            border-radius: 2px;
+
+            font-family: "Courier New", monospace;
+            font-size: 7px;
+            font-weight: bold;
+        }
+
+        .button-primary {
+            background: #00e5ff;
+            color: #061016;
+        }
+
+        .button-primary:hover {
+            background: #62efff;
+        }
+
+        .button-secondary {
+            border: 1px solid #202b3b;
+            color: #8994a3;
+            background: #0d131d;
+        }
+
+        .button-secondary:hover {
+            border-color: #00e5ff;
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           PROFILE IMAGE
+        ========================= */
+
+        .hero-image {
+            width: 200px;
+            height: 200px;
+
+            border-radius: 6px;
+
+            object-fit: cover;
+
+            border: 1px solid #263243;
+
+            background: #111824;
+        }
+
+
+        /* =========================
+           ABOUT / TERMINAL SECTION
+        ========================= */
+
+        .about-section {
+            padding: 0 32px 32px;
+        }
+
+        .terminal {
+            background: #111824;
+
+            border: 1px solid #1e2938;
+
+            border-radius: 6px;
+
+            padding: 16px;
+
+            display: grid;
+            grid-template-columns: 185px 1fr;
+            gap: 20px;
+        }
+
+
+        /* =========================
+           TERMINAL HEADER
+        ========================= */
+
+        .terminal-dots {
+            grid-column: 1 / -1;
+
+            display: flex;
+            gap: 5px;
+
+            margin-bottom: -8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .dot-red {
+            background: #ff5f57;
+        }
+
+        .dot-yellow {
+            background: #ffbd2e;
+        }
+
+        .dot-green {
+            background: #28c840;
+        }
+
+
+        /* =========================
+           INFO BOXES
+        ========================= */
+
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .info-box {
+            background: #192334;
+
+            border-radius: 4px;
+
+            padding: 11px;
+
+            min-height: 39px;
+        }
+
+        .info-label {
+            display: block;
+
+            color: #687587;
+
+            font-size: 6px;
+
+            margin-bottom: 4px;
+        }
+
+        .info-value {
+            color: #dfe5ea;
+
+            font-size: 7px;
+        }
+
+        .info-value.status {
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           ABOUT TEXT
+        ========================= */
+
+        .about-content {
+            padding-top: 2px;
+        }
+
+        .about-title {
+            color: #00e5ff;
+
+            font-size: 9px;
+
+            margin-bottom: 12px;
+        }
+
+        .about-title::before {
+            content: "> ";
+        }
+
+        .about-text {
+            color: #788494;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 8px;
+
+            line-height: 1.7;
+
+            margin-bottom: 12px;
+        }
+
+        .education {
+            color: #8b96a5;
+
+            font-size: 7px;
+        }
+
+        .education span {
+            color: #667385;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #111824;
+
+            border-top: 1px solid #182230;
+
+            padding: 22px 32px;
+        }
+
+        .footer-top {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding-bottom: 18px;
+        }
+
+        .footer-message {
+            color: #697587;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 8px;
+        }
+
+
+        /* =========================
+           SOCIAL BUTTONS
+        ========================= */
+
+        .socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .social {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #182131;
+
+            color: #8994a3;
+
+            font-size: 8px;
+        }
+
+        .social:hover {
+            color: #00e5ff;
+            border: 1px solid #00e5ff;
+        }
+
+
+        /* =========================
+           FOOTER BOTTOM
+        ========================= */
+
+        .footer-bottom {
+            padding-top: 13px;
+
+            border-top: 1px solid #1d2735;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .copyright {
+            color: #4f5a68;
+
+            font-size: 7px;
+        }
+
+        .back-top {
+            color: #00e5ff;
+
+            font-size: 7px;
+        }
+
+        .back-top:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-image {
+                width: 180px;
+                height: 180px;
+            }
+
+            .terminal {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 8px;
+            }
+
+            .hero {
+                padding: 35px 20px;
+
+                text-align: left;
+            }
+
+            .hero-title {
+                font-size: 22px;
+            }
+
+            .hero-image {
+                width: 100%;
+                max-width: 250px;
+                height: 250px;
+            }
+
+            .about-section {
+                padding: 0 20px 30px;
+            }
+
+            .terminal {
+                padding: 14px;
+            }
+
+            .footer-top,
+            .footer-bottom {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+            footer {
+                padding: 22px 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="site-container" id="top">
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav class="navbar">
+
+        <!-- LOGO -->
+
+        <a href="{% url 'home' %}" class="logo">
+            ADRIAN CUBAR//
+        </a>
+
+
+        <!-- NAVIGATION LINKS -->
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}" class="active">
+                HOME
+            </a>
+
+            <a href="{% url 'skills' %}">
+                Skills
+            </a>
+
+            <a href="{% url 'gallery' %}">
+                Gallery
+            </a>
+
+            <a href="{% url 'contact' %}">
+                Contact
+            </a>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <main>
+
+        <section class="hero">
+
+
+            <!-- HERO TEXT -->
+
+            <div class="hero-content">
+
+                <div class="availability">
+                    AVAILABLE FOR CONTRACTS
+                </div>
+
+
+                <h1 class="hero-title">
+
+                    Hi, I'm Adrian Cubar —<br>
+
+                    Web Developer &amp; IT<br>
+
+                    Specialist
+
+                </h1>
+
+
+                <p class="hero-description">
+
+                    Designing and deploying robust, scalable cloud infrastructure
+                    and modern web applications. Focused on bridging the gap
+                    between high-performance systems engineering and elegant
+                    user interfaces.
+
+                </p>
+
+
+                <div class="hero-buttons">
+
+                    <a href="{% url 'contact' %}" class="button button-primary">
+                        CONTACT_ME →
+                    </a>
+
+                    <a href="{% url 'gallery' %}" class="button button-secondary">
+                        VIEW_PROJECTS
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PROFILE IMAGE -->
+
+            <div>
+
+                <img
+                    src="{% static 'images/profile.jpg' %}"
+                    alt="Adrian Cubar"
+                    class="hero-image"
+                >
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =========================
+             ABOUT / TERMINAL
+        ========================= -->
+
+        <section class="about-section">
+
+            <div class="terminal">
+
+
+                <!-- TERMINAL DOTS -->
+
+                <div class="terminal-dots">
+
+                    <span class="dot dot-red"></span>
+
+                    <span class="dot dot-yellow"></span>
+
+                    <span class="dot dot-green"></span>
+
+                </div>
+
+
+
+                <!-- LEFT INFORMATION -->
+
+                <div class="info-list">
+
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            LOCATION
+                        </span>
+
+                        <span class="info-value">
+                            Panglao, Bohol, Philippines
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            SPECIALIZATION
+                        </span>
+
+                        <span class="info-value">
+                            Web Development &amp; IT
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            EXPERIENCE
+                        </span>
+
+                        <span class="info-value">
+                            7+ Years Professional
+                        </span>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span class="info-label">
+                            STATUS
+                        </span>
+
+                        <span class="info-value status">
+                            Open for Work
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- RIGHT ABOUT CONTENT -->
+
+                <div class="about-content">
+
+                    <h2 class="about-title">
+                        Who is Adrian Cubar ?
+                    </h2>
+
+
+                    <p class="about-text">
+
+                        I am a Web Developer and IT Specialist dedicated to
+                        building high-performance applications and secure
+                        digital infrastructure. My experience bridges web
+                        development and systems administration, from writing
+                        scalable frontend code in React to configuring enterprise
+                        Linux servers, firewalls, and cloud environments on AWS.
+
+                    </p>
+
+
+                    <p class="about-text">
+
+                        I treat web development and system infrastructure as
+                        two sides of the same coin: robust code deserves
+                        resilient hosting. Whether refactoring state management,
+                        tuning Nginx servers, or automating deployments with
+                        Docker, I build clean, secure, and highly scalable web
+                        solutions from the ground up.
+
+                    </p>
+
+
+                    <p class="education">
+
+                        Education //
+
+                        <span>
+                            B.S. in Information Technology - Cristal e-College
+                        </span>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+
+        <div class="footer-top">
+
+
+            <div class="footer-message">
+
+                Let's construct something durable together.
+
+            </div>
+
+
+            <div class="socials">
+
+                <a href="#" class="social">
+                    in
+                </a>
+
+                <a href="#" class="social">
+                    GH
+                </a>
+
+                <a href="#" class="social">
+                    ✉
+                </a>
+
+                <a href="#" class="social">
+                    X
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="footer-bottom">
+
+
+            <div class="copyright">
+
+                © 2026 Adrian Cubar. All rights reserved.
+                Built with systemic integrity.
+
+            </div>
+
+
+            <a href="#top" class="back-top">
+
+                return_to_top.sh ↑
+
+            </a>
+
+        </div>
+
+    </footer>
+
+
+</div>
+
+</body>
+
+</html>

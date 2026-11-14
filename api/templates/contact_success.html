@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}
+Message Sent - Adrian Cubar
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+    .success-container {
+        min-height: 500px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        padding: 40px 20px;
+    }
+
+    .success-card {
+        width: 100%;
+        max-width: 600px;
+
+        background: #111824;
+
+        border: 1px solid #1d2938;
+
+        border-radius: 6px;
+
+        padding: 40px;
+
+        text-align: center;
+    }
+
+    .success-icon {
+        color: #00e5ff;
+
+        font-size: 30px;
+
+        margin-bottom: 20px;
+    }
+
+    .success-card h1 {
+        color: #e8edf2;
+
+        font-size: 25px;
+
+        margin-bottom: 15px;
+    }
+
+    .success-card p {
+        color: #778292;
+
+        font-family: Arial, sans-serif;
+
+        font-size: 12px;
+
+        line-height: 1.7;
+
+        margin-bottom: 25px;
+    }
+
+    .back-button {
+        display: inline-block;
+
+        background: #00e5ff;
+
+        color: #061016;
+
+        padding: 12px 20px;
+
+        border-radius: 3px;
+
+        font-family: "Courier New", monospace;
+
+        font-size: 8px;
+
+        font-weight: bold;
+    }
+
+    .back-button:hover {
+        background: #66f1ff;
+    }
+
+</style>
+
+
+<div class="success-container">
+
+    <div class="success-card">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>
+            MESSAGE SENT
+        </h1>
+
+        <p>
+            Your message has been successfully transmitted.
+            Thank you for getting in touch. I will review your
+            message and respond as soon as possible.
+        </p>
+
+        <a href="{% url 'home' %}" class="back-button">
+            RETURN_TO_HOME →
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

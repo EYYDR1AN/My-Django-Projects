@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Department Management System</title>
+</head>
+<body>
+    <div>
+        <h2>Department Management System</h2>
+        <p>Manage departments, department heads, and office locations.</p>
+
+        <a href="{% url 'department_create' %}">+ Add Department</a>
+
+      
+
+        <p>Departments found: {{ departments|length }}</p>
+
+        <table border="1" cellpadding="6" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Department Name</th>
+                    <th>Department Head</th>
+                    <th>Office Location</th>
+                    <th>Date Established</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for department in departments %}
+                <tr>
+                    <td>{{ department.department_code }}</td>
+                    <td>{{ department.department_name }}</td>
+                    <td>{{ department.department_head }}</td>
+                    <td>{{ department.office_location }}</td>
+                    <td>{{ department.date_established }}</td>
+                    <td>
+                        <a href="{% url 'department_edit' department.id %}">View</a>
+                        <a href="{% url 'department_edit' department.id %}">Edit</a>
+                        <a href="{% url 'department_delete' department.id %}">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6">No departments found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

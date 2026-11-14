@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}{{ destination.name }} - Famous Destinations{% endblock %}
+
+{% block extra_css %}
+<style>
+    .detail-header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: white;
+        padding: 3rem 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        border: 2px solid #00d4ff;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.2);
+    }
+
+    .detail-header h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        color: #00ffff;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+
+    .detail-meta {
+        font-size: 1.2rem;
+        opacity: 0.95;
+        margin-bottom: 1rem;
+        color: #b0b0b0;
+    }
+
+    .back-link {
+        display: inline-block;
+        color: #00d4ff;
+        text-decoration: none;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #00ffff;
+        text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        transform: translateX(-5px);
+    }
+
+    .emoji-large {
+        font-size: 4rem;
+        margin-right: 1rem;
+        display: inline-block;
+    }
+
+    .detail-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+    }
+
+    .description-section {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        border: 1px solid #00d4ff;
+    }
+
+    .description-section h2 {
+        color: #00ffff;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 3px solid #00d4ff;
+        padding-bottom: 0.5rem;
+    }
+
+    .description-section p {
+        color: #b0b0b0;
+        line-height: 1.8;
+        font-size: 1.05rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .highlights {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        margin-bottom: 2rem;
+        border: 1px solid #00d4ff;
+    }
+
+    .highlights h3 {
+        color: #00ffff;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 3px solid #00d4ff;
+        padding-bottom: 0.5rem;
+    }
+
+    .highlights-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .highlights-list li {
+        padding: 0.8rem 0;
+        color: #b0b0b0;
+        border-bottom: 1px solid #333;
+        font-size: 1.05rem;
+    }
+
+    .highlights-list li:before {
+        content: "✓ ";
+        color: #00d4ff;
+        font-weight: bold;
+        margin-right: 0.5rem;
+    }
+
+    .highlights-list li:last-child {
+        border-bottom: none;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        margin-bottom: 2rem;
+        border: 1px solid #00d4ff;
+    }
+
+    .info-box h4 {
+        color: #00ffff;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .info-box p {
+        color: #b0b0b0;
+        font-size: 1.05rem;
+        margin: 0;
+    }
+
+    .cta-button {
+        background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+        color: #0f0f0f;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        border-radius: 5px;
+        font-weight: 600;
+        display: inline-block;
+        transition: all 0.3s ease;
+        margin-top: 1.5rem;
+        cursor: pointer;
+        border: none;
+        font-size: 1rem;
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
+        background: linear-gradient(135deg, #00ffff 0%, #00d4ff 100%);
+    }
+
+    @media (max-width: 768px) {
+        .detail-content {
+            grid-template-columns: 1fr;
+        }
+
+        .detail-header h1 {
+            font-size: 2rem;
+        }
+
+        .emoji-large {
+            display: block;
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="detail-header">
+    <a href="{% url 'topics' %}" class="back-link">← Back to Destinations</a>
+    <div style="display: flex; align-items: center;">
+        <span class="emoji-large">{{ destination.emoji }}</span>
+        <div>
+            <h1 style="margin: 0;">{{ destination.name }}</h1>
+            <p class="detail-meta"> {{ destination.country }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="detail-content">
+    <div>
+        <div class="description-section">
+            <h2>About {{ destination.name }}</h2>
+            <p>{{ destination.long_description }}</p>
+            <p>Whether you're seeking cultural experiences, stunning natural beauty, world-class dining, or adventure, {{ destination.name }} offers something for every traveler.</p>
+        </div>
+
+        <div class="highlights">
+            <h3>Must-See Highlights</h3>
+            <ul class="highlights-list">
+                {% for highlight in destination.highlights %}
+                <li>{{ highlight }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div>
+        <div class="info-box">
+            <h4> Average Temperature</h4>
+            <p>{{ destination.average_temp }}</p>
+        </div>
+
+        <div class="info-box">
+            <h4> Best Time to Visit</h4>
+            <p>{{ destination.best_time }}</p>
+        </div>
+
+        <div class="info-box">
+            <h4>Ready to Explore?</h4>
+            <p>Start planning your adventure to {{ destination.name }} today!</p>
+            <a href="{% url 'contact' %}" class="cta-button">Contact Us for Travel Tips</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

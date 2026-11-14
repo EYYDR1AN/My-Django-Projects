@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Add Department</title>
+</head>
+<body>
+    <div>
+        <h2>Add Department</h2>
+        <form method="post">
+            {% csrf_token %}
+            <p>
+                <label>Code:</label><br>
+                <input type="text" name="department_code" required>
+            </p>
+            <p>
+                <label>Department Name:</label><br>
+                <input type="text" name="department_name" required>
+            </p>
+            <p>
+                <label>Department Head:</label><br>
+                <input type="text" name="department_head" required>
+            </p>
+            <p>
+                <label>Office Location:</label><br>
+                <input type="text" name="office_location" required>
+            </p>
+            <p>
+                <label>Date Established:</label><br>
+                <input type="date" name="date_established" required>
+            </p>
+            <button type="submit">Save</button>
+            <a href="{% url 'department_list' %}">Cancel</a>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}About Us - Famous Destinations{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .about-header h1 {
+        font-size: 2rem;
+        color: #e0e0e0;
+        margin-bottom: 1rem;
+    }
+
+    .about-content {
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        margin-bottom: 2rem;
+        border: 1px solid #00d4ff;
+    }
+
+    .about-content h2 {
+        color: #00ffff;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .about-content p {
+        color: #b0b0b0;
+        line-height: 1.8;
+        margin-bottom: 1rem;
+    }
+
+    .about-content ul li {
+        color: #b0b0b0;
+    }
+
+    .mission {
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 153, 255, 0.1));
+        padding: 2rem;
+        border-left: 4px solid #00d4ff;
+        margin: 2rem 0;
+        border-radius: 5px;
+    }
+
+    .mission h3 {
+        color: #00ffff;
+        margin-bottom: 1rem;
+    }
+
+    .mission p {
+        color: #b0b0b0;
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        text-align: center;
+        border: 1px solid #00d4ff;
+        transition: all 0.3s ease;
+    }
+
+    .team-member:hover {
+        border-color: #00ffff;
+        box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
+    }
+
+    .member-avatar {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+    }
+
+    .team-member h3 {
+        color: #00ffff;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-member p {
+        color: #00d4ff;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-member small {
+        color: #999;
+        margin-bottom: 0.5rem;
+    }
+
+    .team-member small {
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="about-header">
+    <h1>About Us </h1>
+    <p>Learn more about our mission to inspire global travel</p>
+</div>
+
+<div class="about-content">
+    <h2>Our Story</h2>
+    <p>
+        Famous Destinations was born from a passion for travel and a desire to inspire others to explore the world. 
+        We believe that traveling to new places, experiencing different cultures, and creating unforgettable memories 
+        are some of life's greatest treasures.
+    </p>
+
+    <div class="mission">
+        <h3> Our Mission</h3>
+        <p>
+            To inspire and guide travelers around the world by showcasing the most amazing destinations, 
+            providing valuable insights, and helping people plan their dream vacations.
+        </p>
+    </div>
+
+    <h2>Why Choose Us?</h2>
+    <ul style="color: #666; line-height: 2; margin-left: 2rem;">
+        <li> Curated selection of world-class destinations</li>
+        <li> Detailed information about each location</li>
+        <li> Travel inspiration and planning resources</li>
+        <li> Community of passionate travelers</li>
+        <li> Expert tips and travel guides</li>
+    </ul>
+
+    <h2>Meet Our Team</h2>
+</div>
+
+<div class="team-grid">
+    <div class="team-member">
+        <div class="member-avatar"></div>
+        <h3>Sarah Chen</h3>
+        <p>Founder & CEO</p>
+        <small>Travel enthusiast with 10+ years of experience</small>
+    </div>
+    <div class="team-member">
+        <div class="member-avatar"></div>
+        <h3>Marco Rodriguez</h3>
+        <p>Travel Guide Director</p>
+        <small>Explorer of 50+ countries worldwide</small>
+    </div>
+    <div class="team-member">
+        <div class="member-avatar"></div>
+        <h3>Aisha Patel</h3>
+        <p>Digital Marketing Manager</p>
+        <small>Connecting travelers with destinations</small>
+    </div>
+</div>
+{% endblock %}

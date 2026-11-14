@@ -1,0 +1,603 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Skill - Adrian Cubar</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #080c12;
+            color: #e8edf2;
+            font-family: "Courier New", monospace;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .site-container {
+            width: 92%;
+            max-width: 1200px;
+            min-height: 100vh;
+            margin: auto;
+            background: #080c12;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            height: 65px;
+            padding: 0 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            border-bottom: 1px solid #171e29;
+        }
+
+        .logo {
+            color: #00e5ff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 22px;
+        }
+
+        .nav-links a {
+            color: #778292;
+            font-size: 10px;
+        }
+
+        .nav-links a:hover {
+            color: #00e5ff;
+        }
+
+        .nav-links .active {
+            color: #00e5ff;
+        }
+
+
+        /* =========================
+           ADD SKILL SECTION
+        ========================= */
+
+        .add-skill-section {
+            padding: 55px 32px 70px;
+        }
+
+        .section-label {
+            color: #00e5ff;
+            font-size: 8px;
+            font-weight: bold;
+            margin-bottom: 9px;
+        }
+
+        .section-label::before {
+            content: "■ ";
+        }
+
+        .add-skill-title {
+            font-size: 27px;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           FORM CARD
+        ========================= */
+
+        .skill-form-card {
+            width: 100%;
+            max-width: 850px;
+
+            background: #111824;
+
+            border: 1px solid #1d2938;
+            border-radius: 6px;
+
+            padding: 30px;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .skill-form p {
+            margin-bottom: 22px;
+        }
+
+        .skill-form label {
+            display: block;
+
+            color: #cbd3dc;
+
+            font-size: 9px;
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        .skill-form input[type="text"],
+        .skill-form textarea {
+            display: block;
+
+            width: 100%;
+
+            background: #080c12;
+
+            color: #e8edf2;
+
+            border: 1px solid #263346;
+            border-radius: 4px;
+
+            padding: 12px 13px;
+
+            font-family: "Courier New", monospace;
+            font-size: 10px;
+
+            outline: none;
+
+            transition: 0.2s ease;
+        }
+
+
+        /* =========================
+           TEXT INPUT
+        ========================= */
+
+        .skill-form input[type="text"] {
+            height: 42px;
+        }
+
+
+        /* =========================
+           DESCRIPTION
+        ========================= */
+
+        .skill-form textarea {
+            min-height: 150px;
+
+            resize: vertical;
+
+            line-height: 1.5;
+        }
+
+
+        /* =========================
+           INPUT FOCUS
+        ========================= */
+
+        .skill-form input[type="text"]:focus,
+        .skill-form textarea:focus {
+            border-color: #00e5ff;
+
+            box-shadow:
+                0 0 0 1px #00e5ff,
+                0 0 12px rgba(0, 229, 255, 0.08);
+        }
+
+
+        /* =========================
+           PLACEHOLDER
+        ========================= */
+
+        .skill-form input::placeholder,
+        .skill-form textarea::placeholder {
+            color: #4f5a68;
+        }
+
+
+        /* =========================
+           ERROR MESSAGE
+        ========================= */
+
+        .skill-form .errorlist {
+            color: #ff6b7a;
+
+            font-size: 8px;
+
+            margin-top: 7px;
+            padding-left: 15px;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .form-buttons {
+            display: flex;
+
+            gap: 10px;
+
+            margin-top: 28px;
+        }
+
+
+        .save-button {
+            display: inline-block;
+
+            background: #00e5ff;
+            color: #080c12;
+
+            border: none;
+            border-radius: 4px;
+
+            padding: 11px 17px;
+
+            font-family: "Courier New", monospace;
+            font-size: 9px;
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .save-button:hover {
+            background: #ffffff;
+        }
+
+
+        .cancel-button {
+            display: inline-block;
+
+            background: #182131;
+            color: #8994a3;
+
+            border: 1px solid #26384d;
+            border-radius: 4px;
+
+            padding: 10px 17px;
+
+            font-family: "Courier New", monospace;
+            font-size: 9px;
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .cancel-button:hover {
+            color: #00e5ff;
+
+            border-color: #00e5ff;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            background: #111824;
+
+            border-top: 1px solid #182230;
+
+            padding: 25px 32px;
+        }
+
+        .footer-top {
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+
+            padding-bottom: 20px;
+        }
+
+        .footer-message {
+            color: #697587;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 8px;
+        }
+
+
+        /* =========================
+           SOCIALS
+        ========================= */
+
+        .socials {
+            display: flex;
+            gap: 8px;
+        }
+
+        .social {
+            width: 27px;
+            height: 27px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #182131;
+
+            color: #8994a3;
+
+            font-size: 8px;
+        }
+
+        .social:hover {
+            color: #00e5ff;
+
+            border: 1px solid #00e5ff;
+        }
+
+
+        /* =========================
+           FOOTER BOTTOM
+        ========================= */
+
+        .footer-bottom {
+            border-top: 1px solid #1d2735;
+
+            padding-top: 15px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .copyright {
+            color: #4f5a68;
+
+            font-size: 7px;
+        }
+
+        .back-top {
+            color: #00e5ff;
+
+            font-size: 7px;
+        }
+
+        .back-top:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                height: auto;
+
+                padding: 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+            .nav-links {
+                gap: 13px;
+            }
+
+            .nav-links a {
+                font-size: 8px;
+            }
+
+            .add-skill-section {
+                padding: 35px 20px 45px;
+            }
+
+            .add-skill-title {
+                font-size: 23px;
+            }
+
+            .skill-form-card {
+                padding: 22px;
+            }
+
+            .form-buttons {
+                flex-direction: column;
+            }
+
+            .save-button,
+            .cancel-button {
+                text-align: center;
+            }
+
+            footer {
+                padding: 22px 20px;
+            }
+
+            .footer-top,
+            .footer-bottom {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="site-container" id="top">
+
+
+    <!-- =========================
+         NAVIGATION
+    ========================= -->
+
+    <nav class="navbar">
+
+        <a href="{% url 'home' %}" class="logo">
+            ADRIAN CUBAR//
+        </a>
+
+        <div class="nav-links">
+
+            <a href="{% url 'home' %}">
+                HOME
+            </a>
+
+            <a href="{% url 'skills' %}" class="active">
+                Skills
+            </a>
+
+            <a href="{% url 'gallery' %}">
+                Gallery
+            </a>
+
+            <a href="{% url 'contact' %}">
+                Contact
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================
+         ADD SKILL
+    ========================= -->
+
+    <main>
+
+        <section class="add-skill-section">
+
+            <div class="section-label">
+                SYSTEM_MODULE
+            </div>
+
+            <h1 class="add-skill-title">
+                Add New Skill
+            </h1>
+
+
+            <!-- FORM CARD -->
+
+            <div class="skill-form-card">
+
+                <form method="POST" class="skill-form">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+
+                    <div class="form-buttons">
+
+                        <button
+                            type="submit"
+                            class="save-button"
+                        >
+                            SAVE SKILL
+                        </button>
+
+
+                        <a
+                            href="{% url 'skills' %}"
+                            class="cancel-button"
+                        >
+                            CANCEL
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        <div class="footer-top">
+
+            <div class="footer-message">
+                Let's construct something durable together.
+            </div>
+
+            <div class="socials">
+
+                <a href="#" class="social">
+                    in
+                </a>
+
+                <a href="#" class="social">
+                    GH
+                </a>
+
+                <a href="#" class="social">
+                    ✉
+                </a>
+
+                <a href="#" class="social">
+                    X
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            <div class="copyright">
+                © 2026 Adrian Cubar. All rights reserved.
+                Built with systemic integrity.
+            </div>
+
+            <a href="#top" class="back-top">
+                return_to_top.sh ↑
+            </a>
+
+        </div>
+
+    </footer>
+
+
+</div>
+
+</body>
+
+</html>
